@@ -1,0 +1,40 @@
+fileFormatVersion: 2
+guid: bc598b4ff39da420682842aee3fc5f50
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
+  _reimportOnDependencyChange: 1
+  _jsonFile: {fileID: -164016180542632921, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
+  _pixelsPerUnit: 16
+  _customLevelPrefab: {instanceID: 0}
+  _intGridValueColorsVisible: 0
+  _useCompositeCollider: 1
+  _geometryType: 0
+  _createBackgroundColor: 1
+  _createLevelBoundsTrigger: 0
+  _useParallax: 1
+  _scaleEntities: 1
+  _intGridValues:
+  - _key: Collisions_1
+    _asset: {fileID: 11400000, guid: 42c52f09cfb624cbb8c0d582fd4a6c5b, type: 2}
+  - _key: Collisions_3
+    _asset: {fileID: 11400000, guid: 42c52f09cfb624cbb8c0d582fd4a6c5b, type: 2}
+  - _key: Collisions_2
+    _asset: {instanceID: 0}
+  _entities:
+  - _key: Player
+    _asset: {fileID: 4777799530105671316, guid: ff1eb9443478e4ca18c2b5e9f82a6fec, type: 3}
+  - _key: Chest
+    _asset: {fileID: 5133276772451166664, guid: 1661b02e1969976418e05fe1a1d28a1a, type: 3}
+  - _key: Mob
+    _asset: {fileID: 5579563622055647098, guid: 13debaebb77104a4f89462df498c19ab, type: 3}
+  - _key: Door
+    _asset: {fileID: 5133276772451166664, guid: 94ae2b1c546513e41811bb1a1bd27f81, type: 3}
+  _enumGenerate: 1
+  _enumPath: Typical_2D_platformer_example/Typical_2D_platformer_example.cs
+  _enumNamespace: Samples.Typical_2D_platformer_example
