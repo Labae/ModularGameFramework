@@ -1,7 +1,7 @@
 using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
 using MarioGame.Gameplay.Enums;
-using MarioGame.Gameplay.Movement;
+using MarioGame.Gameplay.MovementIntents;
 using MarioGame.Gameplay.Player.Core;
 
 namespace MarioGame.Gameplay.Player.States

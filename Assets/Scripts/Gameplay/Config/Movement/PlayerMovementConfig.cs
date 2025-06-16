@@ -27,5 +27,7 @@ namespace MarioGame.Gameplay.Config.Movement
         [Tooltip("짧은 점프 시 중력 배율")]
         [Range(1.0f, 5.0f)]
         public float LowJumpMultiplier = 2f;
+
+        [Header("Climb Config")] public ClimbMovementConfig ClimbConfig;
     }
 }

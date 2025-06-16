@@ -39,6 +39,11 @@ namespace MarioGame.Core.Data
             _isReversing = false;
         }
 
+        public void SetPatrolType(PatrolType patrolType)
+        {
+            _patrolType = patrolType;
+        }
+
         public void MoveToNext()
         {
             if (!HasPatrolPoint || _isCompleted)

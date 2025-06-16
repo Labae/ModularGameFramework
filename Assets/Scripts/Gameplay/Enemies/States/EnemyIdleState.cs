@@ -2,7 +2,7 @@ using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
 using MarioGame.Gameplay.Enemies.Core;
 using MarioGame.Gameplay.Enums;
-using MarioGame.Gameplay.Movement;
+using MarioGame.Gameplay.MovementIntents;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Enemies.States

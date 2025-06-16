@@ -1,6 +1,7 @@
 using MarioGame.Core.Entities;
 using MarioGame.Core.Reactive;
 using MarioGame.Gameplay.Components;
+using MarioGame.Gameplay.Enemies.Components;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Player;
 using UnityEngine;

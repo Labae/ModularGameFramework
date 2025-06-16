@@ -7,6 +7,7 @@ namespace MarioGame.Gameplay.Input
     public class AIInputProvider : IInputProvider
     {
         public float MoveDirection { get; private set; }
+        public float VerticalInput { get; private set; }
         public bool JumpPressed { get; private set; }
         public bool JumpHeld { get; private set; }
         public bool JumpReleased { get; private set; }

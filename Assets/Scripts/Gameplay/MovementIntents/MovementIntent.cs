@@ -1,7 +1,7 @@
 using MarioGame.Gameplay.Enums;
 using UnityEngine;
 
-namespace MarioGame.Gameplay.Movement
+namespace MarioGame.Gameplay.MovementIntents
 {
     /// <summary>
     /// 움직임 의도를 나타내는 데이터 구조

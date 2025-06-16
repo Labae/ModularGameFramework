@@ -34,9 +34,7 @@ namespace MarioGame.Core.Entities
 
         protected void Start()
         {
-            DebugLog("Entity starting:", EntityId);
             Initialize();
-            DebugLog("Entity initialized:", EntityId);
         }
 
         protected virtual void LateUpdate()

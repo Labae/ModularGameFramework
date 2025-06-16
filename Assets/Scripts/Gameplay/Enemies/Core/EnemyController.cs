@@ -1,12 +1,13 @@
 using System.Collections.Generic;
-using LDtkUnity;
 using MarioGame.Core.Data;
 using MarioGame.Core.Entities;
 using MarioGame.Core.StateMachine;
 using MarioGame.Gameplay.Config.Movement;
+using MarioGame.Gameplay.Enemies.Components;
 using MarioGame.Gameplay.Enemies.States;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Input;
+using MarioGame.Level.LDtkImport;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Enemies.Core
@@ -26,7 +27,7 @@ namespace MarioGame.Gameplay.Enemies.Core
 
         private AIInputProvider _inputProvider;
         
-        private LDtkFields _ldtkFields;
+        private LDtkImportedEnemy _importedEnemy;
         
         protected override void Awake()
         {
@@ -41,23 +42,25 @@ namespace MarioGame.Gameplay.Enemies.Core
             _status = GetComponent<EnemyStatus>();
             _inputProvider = new AIInputProvider();
             _movement = GetComponent<EnemyMovement>();
-            _ldtkFields = GetComponent<LDtkFields>();
+            _importedEnemy = GetComponent<LDtkImportedEnemy>();
             AssertIsNotNull(_status, "EnemyStatus component required");
             AssertIsNotNull(_movement, "EnemyMovement component required");
-            AssertIsNotNull(_movement, "LDtkFields component required");
+            AssertIsNotNull(_importedEnemy, "LDtkFields component required");
         }
         
         public override void Initialize()
         {
             base.Initialize();
             _movement.Initialize(_config);
-            
             _stateMachine.Start(EnemyStateType.Idle);
         }
         
         protected override void HandleDestruction()
         {
-            _stateMachine.OnStateChanged -= OnEnemyStateChanged;
+            if (_stateMachine != null)
+            {
+                _stateMachine.OnStateChanged -= OnEnemyStateChanged;
+            }
             _inputProvider.Dispose();
             base.HandleDestruction();
         }
@@ -81,41 +84,23 @@ namespace MarioGame.Gameplay.Enemies.Core
 
         private void SetupStateMachine()
         {
+            var patrolData = _importedEnemy.PatrolData;
+            AssertIsNotNull(patrolData, "PatrolData component required");
+            
+            patrolData.SetPatrolType(_config.PatrolType);
+            
             _stateMachine = new StateMachine<EnemyStateType>(this);
             var context = new EnemyStateContext(_config, _inputProvider, _movement);
             _stateMachine.AddStates(
                 new EnemyIdleState(_stateMachine, this, _status, context),
-                new EnemyPatrolState(_stateMachine, this, _status, context, GetPatrolPointsFromLDtk())
+                new EnemyPatrolState(_stateMachine, this, _status, context, patrolData)
             );
 
             _stateMachine.OnStateChanged += OnEnemyStateChanged;
             DebugLog("StateMachine setup completed");
         }
 
-        private PatrolData GetPatrolPointsFromLDtk()
-        {
-            var points = new List<Vector2>();
-            if (!_ldtkFields.TryGetField("patrol", out var field))
-            {
-                DebugLogError("Failed to get patrol field");
-                return null;
-            }
-
-            if (!field.TryGetArray(out var elements))
-            {
-                DebugLogError("Failed to get array elements");
-                return null;
-            }
-            
-            
-            foreach (var element in elements)
-            {
-                points.Add(element.GetPoint());
-            }
-
-            points.Add(position2D);
-            return new PatrolData(points.ToArray(), _config.PatrolType);
-        }
+       
         
         private void OnEnemyStateChanged(EnemyStateType newState, EnemyStateType oldState)
         {

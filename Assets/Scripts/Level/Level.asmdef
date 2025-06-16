@@ -1,0 +1,17 @@
+{
+    "name": "Level",
+    "rootNamespace": "MarioGame",
+    "references": [
+        "GUID:b279e5128f68f4bb4b70f241b8458385",
+        "GUID:831b458ef8919c24ea12fb444fc41310"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

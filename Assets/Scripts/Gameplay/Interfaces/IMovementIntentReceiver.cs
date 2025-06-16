@@ -1,4 +1,4 @@
-using MarioGame.Gameplay.Movement;
+using MarioGame.Gameplay.MovementIntents;
 
 namespace MarioGame.Gameplay.Interfaces
 {

@@ -34,6 +34,11 @@ namespace MarioGame.Gameplay.Enums
         Crouch,
         
         /// <summary>
+        /// 오르기 상태
+        /// </sumdary>
+        Climb,
+        
+        /// <summary>
         /// 사망 상태 - 체력이 0이 되었을 때
         /// </summary>
         Dead,

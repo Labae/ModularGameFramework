@@ -3,6 +3,7 @@ using MarioGame.Core.Entities;
 using MarioGame.Core.Reactive;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Enums;
+using MarioGame.Gameplay.Player.Components;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Player.Core
@@ -19,40 +20,66 @@ namespace MarioGame.Gameplay.Player.Core
 
         [SerializeField]
         private PlayerJump _jump;
+       
+        [SerializeField]
+        private PlayerClimb _climb;
         
         [SerializeField]
         private GroundChecker _groundChecker;
+        
+        [SerializeField]
+        private LadderChecker _ladderChecker;
 
         [Header("Observable States")] 
+        [Header("Checks")]
         [SerializeField]
         private ObservableBool _isGrounded = new();
         
+        [SerializeField]
+        private ObservableBool _isOnLadder = new();
+        private ObservableBool _isAtLadderTop = new();
+        private ObservableBool _isAtLadderBottom = new();
+        
+        [Header("Movement")]
         [SerializeField] private ObservableBool _isRising = new();
         [SerializeField] private ObservableBool _isFalling = new();
         [SerializeField] private ObservableBool _isMoving = new();
+        [SerializeField] private ObservableBool _isClimbing = new();
 
         [SerializeField] private ObservableProperty<float> _horizontalVelocity = new(0f);
         [SerializeField] private ObservableProperty<float> _verticalVelocity = new(0f);
         [SerializeField] private ObservableProperty<float> _currentSpeed = new(0f);
+        [SerializeField] private ObservableProperty<float> _climbSpeed = new(0f);
 
-        
         public ObservableBool IsGrounded => _isGrounded;
         public ObservableBool IsRising => _isRising;
         public ObservableBool IsFalling => _isFalling;
         public ObservableBool IsMoving => _isMoving;
+        public ObservableBool IsClimbing => _isClimbing;
+        
+        public ObservableBool IsOnLadder => _isOnLadder;
+        public ObservableBool IsAtLadderTop => _isAtLadderTop;
+        public ObservableBool IsAtLadderBottom => _isAtLadderBottom;
         
         public ObservableProperty<float> HorizontalVelocity => _horizontalVelocity;
         public ObservableProperty<float> VerticalVelocity => _verticalVelocity;
         public ObservableProperty<float> CurrentSpeed => _currentSpeed;
+        public ObservableProperty<float> ClimbSpeed => _climbSpeed;
         
         public bool IsGroundedValue => _isGrounded.Value;
         public bool IsRisingValue => _isRising.Value;
         public bool IsFallingValue => _isFalling.Value;
         public bool IsMovingValue => _isMoving.Value;
+        public bool IsClimbingValue => _isClimbing.Value;
+        
+        public bool IsOnLadderValue => _isOnLadder.Value;
+        public bool IsAtLadderTopValue => _isAtLadderTop.Value;
+        public bool IsAtLadderBottomValue => _isAtLadderBottom.Value;
         
         public float HorizontalVelocityValue => _horizontalVelocity.Value;
         public float VerticalVelocityValue => _verticalVelocity.Value;
         public float CurrentSpeedValue => _currentSpeed.Value;
+        public float ClimbSpeedValue => _climbSpeed.Value;
         
         protected override void CacheComponents()
         {
@@ -60,10 +87,14 @@ namespace MarioGame.Gameplay.Player.Core
             _movement = GetComponent<PlayerMovement>();
             _jump = GetComponent<PlayerJump>();
             _groundChecker = GetComponent<GroundChecker>();
+            _ladderChecker = GetComponent<LadderChecker>();
+            _climb = GetComponent<PlayerClimb>();
             
             AssertIsNotNull(_movement, "PlayerMovement component required");
             AssertIsNotNull(_jump, "PlayerJump component required");
             AssertIsNotNull(_groundChecker, "GroundChecker component required");
+            AssertIsNotNull(_ladderChecker, "LadderChecker component required");
+            AssertIsNotNull(_climb, "PlayerClimb component required");
         }
 
         protected override void UpdateStates()
@@ -75,10 +106,16 @@ namespace MarioGame.Gameplay.Player.Core
             _isFalling.Value = _jump.IsFalling;
 
             _isMoving.Value = _movement.IsMoving;
+            _isClimbing.Value = _climb.IsClimbing;
+
+            _isOnLadder.Value = _ladderChecker.IsOnLadder;
+            _isAtLadderTop.Value = _ladderChecker.IsAtLadderTop;
+            _isAtLadderBottom.Value = _ladderChecker.IsAtLadderBottom;
             
             _horizontalVelocity.Value = _movement.HorizontalSpeed;
             _verticalVelocity.Value = _jump.VerticalVelocity;
             _currentSpeed.Value = _movement.CurrentSpeed;
+            _climbSpeed.Value = _climb.ClimbVelocity;
         }
     }
 }

@@ -13,7 +13,10 @@ namespace MarioGame.Gameplay.Input
     {
         [field: SerializeField]
         public float MoveDirection { get; private set; }
-        
+
+        [field: SerializeField]
+        public float VerticalInput { get; private set; }
+
         [field: SerializeField]
         public bool JumpPressed { get; private set; }
         
@@ -37,6 +40,8 @@ namespace MarioGame.Gameplay.Input
         public void UpdateInput()
         {
             MoveDirection = _playerInputReader.MoveDirection;
+            VerticalInput = _playerInputReader.VerticalInput;
+
             JumpPressed = _playerInputReader.JumpPressed;
             JumpHeld = _playerInputReader.JumpHeld;
             JumpReleased = _playerInputReader.JumpReleased;

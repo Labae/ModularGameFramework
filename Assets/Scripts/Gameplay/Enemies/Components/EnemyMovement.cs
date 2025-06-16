@@ -4,38 +4,32 @@ using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Interfaces;
-using MarioGame.Gameplay.Movement;
+using MarioGame.Gameplay.MovementIntents;
 using UnityEngine;
 
-namespace MarioGame.Gameplay.Player
+namespace MarioGame.Gameplay.Enemies.Components
 {
-    /// <summary>
-    /// 플레이어 전용 수평 이동 구현
-    /// </summary>
-    [DisallowMultipleComponent]
-    public class PlayerMovement : EntityMovement, IMovementIntentReceiver
+    public class EnemyMovement : EntityMovement, IMovementIntentReceiver
     {
-        private PlayerMovementConfig _config;
-        
+        private EnemyMovementConfig _config;
         [field: SerializeField]
         public MovementIntent CurrentIntent { get; private set; }
-
-        public void Initialize(PlayerMovementConfig config)
+        
+        public void Initialize(EnemyMovementConfig config)
         {
             _config = config;
-            AssertIsNotNull(_config, "PlayerMovementConfig required");
+            AssertIsNotNull(_config, "EnemyMovementConfig required");
         }
         
         public void SetMovementIntent(MovementIntent intent)
         {
             CurrentIntent = intent;
         }
-
+        
         private void FixedUpdate()
         {
             if (_config == null)
             {
-                AssertIsNotNull(_config, "PlayerMovementConfig is not initialized");
                 return;
             }
 
@@ -80,22 +74,22 @@ namespace MarioGame.Gameplay.Player
             var targetVelocity = CurrentIntent.HorizontalInput * _config.BaseSpeed * CurrentIntent.SpeedMultiplier;
             SetHorizontalVelocity(targetVelocity);
         }
-
+        
         public override void ApplyAcceleration(float inputDirection, float speedMultiplier = 1)
         {
             if (_config == null)
             {
-                LogError("PlayerMovementConfig not initialized");
+                LogError("EnemyMovementConfig not initialized");
                 return;
             }
             
             var processedInput = FloatUtility.RemoveDeadzone(inputDirection, _config.InputDeadzone);
             var targetSpeed = processedInput * _config.BaseSpeed * speedMultiplier;
             var acceleration = _config.Acceleration;
-            
-            if (FloatUtility.IsDirectionChanged(_currentHorizontalSpeed, inputDirection))
+
+            if (FloatUtility.IsDirectionChanged(_currentHorizontalSpeed, processedInput))
             {
-                acceleration *= 1.5f;
+                acceleration *= 1.2f;
             }
             
             if (FloatUtility.IsInputActive(processedInput))
@@ -108,7 +102,6 @@ namespace MarioGame.Gameplay.Player
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 
                     0, _config.Deceleration * Time.fixedDeltaTime);
             }
-            
             SetHorizontalVelocity(_currentHorizontalSpeed);
         }
 
@@ -116,7 +109,7 @@ namespace MarioGame.Gameplay.Player
         {
             if (_config == null)
             {
-                LogError("PlayerMovementConfig not initialized");
+                LogError("EnemyMovementConfig not initialized");
                 return;
             }
             
@@ -132,7 +125,7 @@ namespace MarioGame.Gameplay.Player
                 SetHorizontalVelocity(_currentHorizontalSpeed);
             }
         }
-
+        
         public override void Stop()
         {
             base.Stop();

@@ -15,7 +15,6 @@ MonoBehaviour:
   BaseSpeed: 6
   Acceleration: 20
   Deceleration: 30
-  WalkMultiplier: 1
   RunMultiplier: 1
   AirControlMultiplier: 0.6
   JumpForce: 16
@@ -26,6 +25,4 @@ MonoBehaviour:
   VariableJumpMultiplier: 0.5
   FallMultiplier: 2.5
   LowJumpMultiplier: 2
-  LandingDuration: 0.2
-  LandingSpeedMultiplier: 0.8
-  MinFallSpeedForLanding: 0.2
+  ClimbConfig: {fileID: 11400000, guid: 67b3ac16d41964b7e81f570c63209e30, type: 2}

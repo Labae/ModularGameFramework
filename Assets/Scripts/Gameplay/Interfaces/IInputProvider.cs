@@ -14,6 +14,11 @@ namespace MarioGame.Gameplay.Interfaces
         float MoveDirection { get; }
         
         /// <summary>
+        /// 수직 이동
+        /// </summary>
+        float VerticalInput { get; }
+
+        /// <summary>
         /// 점프 버튼이 눌렸는지
         /// </summary>
         bool JumpPressed { get; }
@@ -32,6 +37,7 @@ namespace MarioGame.Gameplay.Interfaces
         /// 웅크리기 버튼을 누르고 있는지
         /// </summary>
         bool CrouchHeld { get; }
+
 
         /// <summary>
         /// 입력 업데이트

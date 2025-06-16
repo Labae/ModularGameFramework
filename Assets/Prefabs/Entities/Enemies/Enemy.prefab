@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4013782262399032391}
   - component: {fileID: 8158575758682650968}
   - component: {fileID: 1797790083484291891}
+  - component: {fileID: -4375988739210016320}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -179,6 +180,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   _drawGizmos: 1
+--- !u!114 &-4375988739210016320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6858695603126609805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5ac9c2a03444408b9b32df26d1f1ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8315603667962752247
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +313,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 4144728052131652911}
   _spriteRenderer: {fileID: 545529925530678722}
+  _defaultFacingDirection: 1
   _flipOnDirectionChanged: 1
   _defaultAnimationSpeed: 1
   _animationPrefix: 

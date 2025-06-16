@@ -9,18 +9,21 @@ namespace MarioGame.Gameplay.Player.States
         public IInputProvider InputProvider { get; }
         public IMovementIntentReceiver IntentReceiver { get; }
         public IPlayerJumpActions JumpActions { get; }
+        public IPlayerClimbActions ClimbActions { get; }
 
         public PlayerStateContext
         (
             PlayerMovementConfig movementConfig,
             IInputProvider inputProvider,
             IMovementIntentReceiver intentReceiver,
-            IPlayerJumpActions jumpActions)
+            IPlayerJumpActions jumpActions,
+            IPlayerClimbActions climbActions)
         {
             MovementConfig = movementConfig;
             InputProvider = inputProvider;
             IntentReceiver = intentReceiver;
             JumpActions = jumpActions;
+            ClimbActions = climbActions;
         }
     }
 }

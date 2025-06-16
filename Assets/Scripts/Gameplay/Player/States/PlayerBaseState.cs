@@ -26,5 +26,34 @@ namespace MarioGame.Gameplay.Player.States
         {
             return FloatUtility.IsInputActive(_context.InputProvider.MoveDirection);
         }
+
+        protected bool CheckClimbTransition()
+        {
+            if (!_status.IsOnLadderValue)
+            {
+                return false;
+            }
+            
+            var verticalInput = _context.InputProvider.VerticalInput;
+            var processedInput =
+                FloatUtility.RemoveDeadzone(verticalInput, _context.MovementConfig.ClimbConfig.ClimbInputDeadzone);
+
+            if (!FloatUtility.IsInputActive(processedInput))
+            {
+                return false;
+            }
+
+            if (processedInput > 0 && _status.IsAtLadderTopValue)
+            {
+                return false;
+            }
+
+            if (processedInput < 0 && _status.IsAtLadderBottomValue)
+            {
+                return false;
+            }
+            
+            return true;
+        }
     }
 }

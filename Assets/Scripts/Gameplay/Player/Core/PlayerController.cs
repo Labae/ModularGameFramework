@@ -1,11 +1,12 @@
-using System;
 using MarioGame.Core.Entities;
 using MarioGame.Core.StateMachine;
+using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Config.Input;
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Input;
 using MarioGame.Gameplay.Interfaces;
+using MarioGame.Gameplay.Player.Components;
 using MarioGame.Gameplay.Player.States;
 using UnityEngine;
 
@@ -22,9 +23,11 @@ namespace MarioGame.Gameplay.Player.Core
 
         private PlayerStatus _status;
 
-        [SerializeField] private PlayerMovementConfig _config;
+        [SerializeField] private PlayerMovementConfig _movementConfig;
         private PlayerMovement _movement;
         private PlayerJump _playerJump;
+        private PlayerClimb _playerClimb;
+        private EntityBypass _entityBypass;
 
         [SerializeField] private PlayerInputReader _playerInputReader;
         private IInputProvider _inputProvider;
@@ -45,16 +48,22 @@ namespace MarioGame.Gameplay.Player.Core
             _inputProvider = new PlayerInputProvider(_playerInputReader);
             _movement = GetComponent<PlayerMovement>();
             _playerJump = GetComponent<PlayerJump>();
+            _playerClimb = GetComponent<PlayerClimb>();
+            _entityBypass = GetComponent<EntityBypass>();
             AssertIsNotNull(_status, "PlayerStatus component required");
             AssertIsNotNull(_movement, "PlayerMovement component required");
             AssertIsNotNull(_playerJump, "PlayerJump component required");
+            AssertIsNotNull(_playerClimb, "PlayerClimb component required");
+            AssertIsNotNull(_entityBypass, "EntityBypass component required");
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            _movement.Initialize(_config);
-            _playerJump.Initialize(_config);
+            _movement.Initialize(_movementConfig);
+            _playerJump.Initialize(_movementConfig);
+            _playerClimb.Initialize(_movementConfig.ClimbConfig);
+            _entityBypass.Initialize(_inputProvider);
             _stateMachine.Start(PlayerStateType.Idle);
         }
 
@@ -85,14 +94,21 @@ namespace MarioGame.Gameplay.Player.Core
         private void SetupStateMachine()
         {
             _stateMachine = new StateMachine<PlayerStateType>(this);
-            var context = new PlayerStateContext(_config, _inputProvider, _movement, _playerJump);
+            var context = new PlayerStateContext(
+                _movementConfig,
+                _inputProvider,
+                _movement,
+                _playerJump,
+                _playerClimb);
+
             _stateMachine.AddStates(
                 new PlayerIdleState(_stateMachine, this, _status, context),
                 new PlayerRunState(_stateMachine, this, _status, context),
                 new PlayerJumpState(_stateMachine, this, _status, context),
                 new PlayerFallState(_stateMachine, this, _status, context),
-                new PlayerCrouchState(_stateMachine, this, _status, context)
-                );
+                new PlayerCrouchState(_stateMachine, this, _status, context),
+                new PlayerClimbState(_stateMachine, this, _status, context)
+            );
 
             _stateMachine.OnStateChanged += OnPlayerStateChanged;
             DebugLog("StateMachine setup completed");

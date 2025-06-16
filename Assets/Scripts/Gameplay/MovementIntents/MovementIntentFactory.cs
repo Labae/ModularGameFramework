@@ -2,7 +2,7 @@ using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Enums;
 
-namespace MarioGame.Gameplay.Movement
+namespace MarioGame.Gameplay.MovementIntents
 {
     /// <summary>
     /// Intent 생성을 담당하는 팩토리
@@ -10,9 +10,9 @@ namespace MarioGame.Gameplay.Movement
     /// </summary>
     public static class MovementIntentFactory
     {
-        public static MovementIntent CreateIdle()
+        public static MovementIntents.MovementIntent CreateIdle()
         {
-            return new MovementIntent
+            return new MovementIntents.MovementIntent
             {
                 HorizontalInput = 0,
                 SpeedMultiplier = 1.0f,
@@ -23,11 +23,11 @@ namespace MarioGame.Gameplay.Movement
             };
         }
         
-        public static MovementIntent CreateGroundMovement(BaseMovementConfig config,
+        public static MovementIntents.MovementIntent CreateGroundMovement(BaseMovementConfig config,
             float input, float speedMultiplier)
         {
             var processedInput = FloatUtility.RemoveDeadzone(input, config.InputDeadzone);
-            return new MovementIntent
+            return new MovementIntents.MovementIntent
             {
                 HorizontalInput = processedInput,
                 SpeedMultiplier = speedMultiplier,
@@ -38,11 +38,11 @@ namespace MarioGame.Gameplay.Movement
             };
         }        
         
-        public static MovementIntent CreateAirControl(BaseMovementConfig config,
+        public static MovementIntents.MovementIntent CreateAirControl(BaseMovementConfig config,
             float input, float speedMultiplier)
         {
             var processedInput = FloatUtility.RemoveDeadzone(input, config.InputDeadzone);
-            return new MovementIntent
+            return new MovementIntents.MovementIntent
             {
                 HorizontalInput = processedInput,
                 SpeedMultiplier = speedMultiplier,
@@ -53,9 +53,9 @@ namespace MarioGame.Gameplay.Movement
             };
         }
         
-        public static MovementIntent CreateForced(float horizontalForce, float speedMultiplier)
+        public static MovementIntents.MovementIntent CreateForced(float horizontalForce, float speedMultiplier)
         {
-            return new MovementIntent
+            return new MovementIntents.MovementIntent
             {
                 HorizontalInput = horizontalForce,
                 SpeedMultiplier = speedMultiplier,

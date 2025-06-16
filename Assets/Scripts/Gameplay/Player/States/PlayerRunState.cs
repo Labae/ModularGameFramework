@@ -2,7 +2,7 @@ using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
 using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Enums;
-using MarioGame.Gameplay.Movement;
+using MarioGame.Gameplay.MovementIntents;
 using MarioGame.Gameplay.Player.Core;
 
 namespace MarioGame.Gameplay.Player.States
@@ -51,6 +51,12 @@ namespace MarioGame.Gameplay.Player.States
 
         private void CheckTransitions()
         {
+            if (CheckClimbTransition())
+            {
+                ChangeState(PlayerStateType.Climb);
+                return;
+            }
+            
             if (!_status.IsGroundedValue)
             {
                 if (_status.IsRisingValue)

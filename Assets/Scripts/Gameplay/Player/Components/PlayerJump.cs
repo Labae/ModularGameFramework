@@ -4,7 +4,7 @@ using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Interfaces;
 using UnityEngine;
 
-namespace MarioGame.Gameplay.Player
+namespace MarioGame.Gameplay.Player.Components
 {
     [DisallowMultipleComponent]
     public sealed class PlayerJump : EntityJump, IPlayerJumpActions
@@ -32,7 +32,6 @@ namespace MarioGame.Gameplay.Player
         {
             if (_config == null)
             {
-                LogError("PlayerMovementConfig not initialized");
                 return;
             }
             
@@ -43,7 +42,6 @@ namespace MarioGame.Gameplay.Player
         {
             if (_config == null)
             {
-                LogError("PlayerMovementConfig not initialized");
                 return;
             }
             

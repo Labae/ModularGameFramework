@@ -1,6 +1,7 @@
 using System;
 using MarioGame.Core;
 using MarioGame.Core.Extensions;
+using MarioGame.Level.Interfaces;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Components
@@ -21,6 +22,10 @@ namespace MarioGame.Gameplay.Components
 
         [SerializeField] private LayerMask _groundLayerMask;
 
+        [Header("Bypass System")] [SerializeField]
+        private bool _enableBypasss = true;
+        private IBypassable _currentBypassable;
+
         [Header("Debug")] [SerializeField] private bool _drawGizmos = true;
         private RaycastHit2D[] _groundCheckHits;
         
@@ -29,29 +34,27 @@ namespace MarioGame.Gameplay.Components
         
         private Collider2D _collider2D;
 
-        public Action OnGroundEnter;
-        public Action OnGroundExit;
+        public event Action OnGroundEnter;
+        public event Action OnGroundExit;
 
         public bool IsGrounded => _isGrounded;
+        public bool CanBypass => _enableBypasss && _currentBypassable != null;
+        public bool HasBypassableBelow => _currentBypassable != null;
+        public IBypassable CurrentBypassable => _currentBypassable;
 
-        protected override void Awake()
+        protected override void CacheComponents()
         {
-            base.Awake();
-            CacheGroundCheckerComponents();
+            base.CacheComponents();
+            _collider2D = GetComponent<Collider2D>();
+            AssertIsNotNull(_collider2D, "Collider2D component required");
+
+            _groundCheckHits = new RaycastHit2D[_groundCheckRayCount+1];
         }
 
         private void FixedUpdate()
         {
             PerformGroundCheck();
             HandleGroundEvents();
-        }
-
-        private void CacheGroundCheckerComponents()
-        {
-            _collider2D = GetComponent<Collider2D>();
-            AssertIsNotNull(_collider2D, "Collider2D component required");
-
-            _groundCheckHits = new RaycastHit2D[_groundCheckRayCount+1];
         }
 
         private void PerformGroundCheck()
@@ -68,6 +71,7 @@ namespace MarioGame.Gameplay.Components
             var startX = bottom.x - checkWidth * 0.5f;
             var endX = bottom.x + checkWidth * 0.5f;
 
+            _currentBypassable = null;
             bool foundGround = false;
 
             for (var i = 0; i <= _groundCheckRayCount; i++)
@@ -76,12 +80,14 @@ namespace MarioGame.Gameplay.Components
                 var rayX = Mathf.Lerp(startX, endX, t);
                 var rayStart = new Vector2(rayX, bottom.y);
 
-                var hit = Physics2D.RaycastNonAlloc(rayStart, Vector3.down
+                var hitSize = Physics2D.RaycastNonAlloc(rayStart, Vector3.down
                     , _groundCheckHits, _groundCheckDistance, _groundLayerMask);
                 
-                foundGround = hit > 0;
-                if (foundGround)
+                if (hitSize > 0)
                 {
+                    foundGround = true;
+
+                    FindBypass(hitSize);
                     break;
                 }
             }
@@ -89,7 +95,24 @@ namespace MarioGame.Gameplay.Components
             _wasGroundedLastFrame = _isGrounded;
             _isGrounded = foundGround;
         }
-        
+
+        private void FindBypass(int hitSize)
+        {
+            if (!_enableBypasss || _currentBypassable != null) return;
+           
+            for (var i = 0; i < hitSize; i++)
+            {
+                var bypass = _groundCheckHits[i].collider.GetComponent<IBypassable>();
+                if (bypass == null)
+                {
+                    continue;
+                }
+                
+                _currentBypassable = bypass;
+                break;
+            }
+        }
+
         private void HandleGroundEvents()
         {
             if (_isGrounded && !_wasGroundedLastFrame)
