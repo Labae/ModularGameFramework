@@ -12,6 +12,7 @@ namespace MarioGame.Gameplay.Input
         public bool JumpHeld { get; private set; }
         public bool JumpReleased { get; private set; }
         public bool CrouchHeld { get; private set; }
+        public bool FirePressed { get; private set; }
 
         private bool _wantsToJump;
         private float _desiredMoveDirection;

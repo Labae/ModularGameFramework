@@ -1,6 +1,8 @@
 using MarioGame.Core;
 using MarioGame.Core.Entities;
+using MarioGame.Core.Enums;
 using MarioGame.Core.Reactive;
+using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Player.Components;
@@ -100,6 +102,16 @@ namespace MarioGame.Gameplay.Player.Core
         protected override void UpdateStates()
         {
             base.UpdateStates();
+
+            if (HorizontalVelocityValue > FloatUtility.VELOCITY_THRESHOLD)
+            {
+                _faceDirection.Value = HorizontalDirectionType.Right;
+            }
+            else if (HorizontalVelocityValue < -FloatUtility.VELOCITY_THRESHOLD)
+            {
+                _faceDirection.Value = HorizontalDirectionType.Left;
+            }
+            
             _isGrounded.Value = _groundChecker.IsGrounded;
         
             _isRising.Value = _jump.IsRising;

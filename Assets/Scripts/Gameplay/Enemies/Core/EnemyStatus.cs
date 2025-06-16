@@ -1,5 +1,7 @@
 using MarioGame.Core.Entities;
+using MarioGame.Core.Enums;
 using MarioGame.Core.Reactive;
+using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Enemies.Components;
 using MarioGame.Gameplay.Enums;
@@ -25,7 +27,7 @@ namespace MarioGame.Gameplay.Enemies.Core
 
         [SerializeField] private ObservableProperty<float> _horizontalVelocity = new(0f);
         [SerializeField] private ObservableProperty<float> _currentSpeed = new(0f);
-        
+
         public ObservableBool IsGrounded => _isGrounded;
         public ObservableBool IsMoving => _isMoving;
         public ObservableProperty<float> HorizontalVelocity => _horizontalVelocity;
@@ -33,6 +35,7 @@ namespace MarioGame.Gameplay.Enemies.Core
         public bool IsGroundedValue => _isGrounded.Value;
         public bool IsMovingValue => _isMoving.Value;
         public float CurrentSpeedValue => _currentSpeed.Value;
+        public float HorizontalVelocityValue => _horizontalVelocity.Value;
 
         protected override void CacheComponents()
         {
@@ -46,6 +49,15 @@ namespace MarioGame.Gameplay.Enemies.Core
         
         protected override void UpdateStates()
         {
+            if (HorizontalVelocityValue > FloatUtility.VELOCITY_THRESHOLD)
+            {
+                _faceDirection.Value = HorizontalDirectionType.Right;
+            }
+            else if (HorizontalVelocityValue < -FloatUtility.VELOCITY_THRESHOLD)
+            {
+                _faceDirection.Value = HorizontalDirectionType.Left;
+            }
+            
             _isGrounded.Value = _groundChecker.IsGrounded;
         
             _isMoving.Value = _movement.IsMoving;

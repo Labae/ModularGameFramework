@@ -25,7 +25,7 @@ namespace MarioGame.Gameplay.Player.Core
         private void OnDestroy()
         {
             _playerStatus.CurrentState.OnValueChanged -= OnStateChanged;
-            _playerStatus.HorizontalVelocity.OnValueChanged -= UpdateDirection;
+            _playerStatus.FaceDirection.OnValueChanged -= UpdateDirection;
             _playerStatus.ClimbSpeed.OnValueChanged -= UpdateClimbAnimationSpeed;
             _playerStatus.IsClimbing.OnBecameFalse -= OnIsClimbingBecameFalse;
         }
@@ -39,7 +39,7 @@ namespace MarioGame.Gameplay.Player.Core
             }
 
             _playerStatus.CurrentState.OnValueChanged += OnStateChanged;
-            _playerStatus.HorizontalVelocity.OnValueChanged += UpdateDirection;
+            _playerStatus.FaceDirection.OnValueChanged += UpdateDirection;
             _playerStatus.ClimbSpeed.OnValueChanged += UpdateClimbAnimationSpeed;
             _playerStatus.IsClimbing.OnBecameFalse += OnIsClimbingBecameFalse;
         }

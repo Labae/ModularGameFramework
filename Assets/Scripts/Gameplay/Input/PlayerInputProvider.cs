@@ -29,6 +29,8 @@ namespace MarioGame.Gameplay.Input
         [field: SerializeField]
         public bool CrouchHeld { get; private set; }
 
+        public bool FirePressed { get; private set; }
+
         private readonly PlayerInputReader _playerInputReader;
         
         public PlayerInputProvider(PlayerInputReader inputReader)
@@ -46,6 +48,7 @@ namespace MarioGame.Gameplay.Input
             JumpHeld = _playerInputReader.JumpHeld;
             JumpReleased = _playerInputReader.JumpReleased;
             CrouchHeld = _playerInputReader.CrouchHeld;
+            FirePressed = _playerInputReader.FirePressed;
         }
 
         public void ResetFrameInputs()

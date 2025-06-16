@@ -19,7 +19,7 @@ namespace MarioGame.Core.Entities
 
         [Header("Sprite Direction Settings")]
         [SerializeField]
-        protected MoveDirectionType _defaultFacingDirection = MoveDirectionType.Right;
+        private HorizontalDirectionType _defaultFaceDirection = HorizontalDirectionType.Right;
         [SerializeField]
         protected bool _flipOnDirectionChanged = true;
 
@@ -33,15 +33,13 @@ namespace MarioGame.Core.Entities
         
         protected TStateType _currentState;
         
-        protected bool _isFacingRight = true;
+        protected HorizontalDirectionType _currentFaceDireciton = HorizontalDirectionType.Right;
 
         protected override void Awake()
         {
             base.Awake();
             SetupStateAnimationMappings();
             CacheAnimationHashes();
-            
-            _isFacingRight = _defaultFacingDirection == MoveDirectionType.Right;
         }
 
         protected override void CacheComponents()
@@ -52,6 +50,7 @@ namespace MarioGame.Core.Entities
             
             AssertIsNotNull(_animator, "Animator required");
             AssertIsNotNull(_spriteRenderer, "SpriteRenderer required");
+            _currentFaceDireciton = _defaultFaceDirection;
         }
 
         protected virtual void SetupStateAnimationMappings()
@@ -114,21 +113,23 @@ namespace MarioGame.Core.Entities
             _animator.Play(animationHash);
         }
 
-        public virtual void SetDirection(bool facingRight)
+        public virtual void SetDirection(HorizontalDirectionType directionType)
         {
             if (!_flipOnDirectionChanged || _spriteRenderer == null)
             {
                 return;
             }
 
-            if (_isFacingRight == facingRight)
+            if (_currentFaceDireciton == directionType)
             {
                 return;
             }
             
-            _isFacingRight = facingRight;
+            _currentFaceDireciton = directionType;
 
-            if (_defaultFacingDirection == MoveDirectionType.Right)
+            var facingRight = (_currentFaceDireciton == HorizontalDirectionType.Right);
+            
+            if (_defaultFaceDirection == HorizontalDirectionType.Right)
             {
                 _spriteRenderer.flipX = !facingRight;
             }
@@ -138,12 +139,9 @@ namespace MarioGame.Core.Entities
             }
         }
 
-        public virtual void UpdateDirection(float horizontalInput)
+        public virtual void UpdateDirection(HorizontalDirectionType directionType)
         {
-            if (FloatUtility.IsInputActive(horizontalInput))
-            {
-                SetDirection(horizontalInput > 0);
-            }
+            SetDirection(directionType);
         }
 
         public virtual void SetAnimationSpeed(float speed)

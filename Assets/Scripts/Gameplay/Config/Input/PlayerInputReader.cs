@@ -19,6 +19,7 @@ namespace MarioGame.Gameplay.Config.Input
         [field: SerializeField] public bool JumpReleased { get; private set; }
 
         [field: SerializeField] public bool CrouchHeld { get; private set; }
+        [field: SerializeField] public bool FirePressed { get; private set; }
 
         protected override void OnEnable()
         {
@@ -40,6 +41,7 @@ namespace MarioGame.Gameplay.Config.Input
         {
             JumpPressed = false;
             JumpReleased = false;
+            FirePressed = false;
         }
 
         public void OnHorizontal(InputAction.CallbackContext context)
@@ -70,6 +72,14 @@ namespace MarioGame.Gameplay.Config.Input
         public void OnCrouch(InputAction.CallbackContext context)
         {
             CrouchHeld = context.ReadValueAsButton();
+        }
+
+        public void OnFire(InputAction.CallbackContext context)
+        {
+            if (context.started)
+            {
+                FirePressed = true;
+            }
         }
     }
 }

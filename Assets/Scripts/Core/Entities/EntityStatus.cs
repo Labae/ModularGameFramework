@@ -1,6 +1,8 @@
 using System;
+using MarioGame.Core.Enums;
 using MarioGame.Core.Reactive;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MarioGame.Core.Entities
 {
@@ -11,6 +13,12 @@ namespace MarioGame.Core.Entities
         protected ObservableProperty<T> _currentState;
         public ObservableProperty<T> CurrentState => _currentState;
         public T CurrentStateValue => _currentState.Value;
+        
+        [SerializeField]
+        protected ObservableProperty<HorizontalDirectionType> _faceDirection;
+        
+        public ObservableProperty<HorizontalDirectionType> FaceDirection => _faceDirection;
+        public HorizontalDirectionType FaceDirectionValue => _faceDirection.Value;
         
         private void Start()
         {

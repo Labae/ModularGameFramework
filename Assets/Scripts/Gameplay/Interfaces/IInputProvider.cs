@@ -37,6 +37,11 @@ namespace MarioGame.Gameplay.Interfaces
         /// 웅크리기 버튼을 누르고 있는지
         /// </summary>
         bool CrouchHeld { get; }
+        
+        /// <summary>
+        /// 공격 버튼을 누르고 있는지
+        /// </summary>
+        bool FirePressed { get; }
 
 
         /// <summary>

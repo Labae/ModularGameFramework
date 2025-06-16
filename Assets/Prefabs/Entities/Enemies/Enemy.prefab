@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2047168261765910649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 272218031069978924}
+  m_Layer: 9
+  m_Name: HurtBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &272218031069978924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047168261765910649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4368623408528648506}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6858695603126609805
 GameObject:
   m_ObjectHideFlags: 0
@@ -16,7 +47,7 @@ GameObject:
   - component: {fileID: 8158575758682650968}
   - component: {fileID: 1797790083484291891}
   - component: {fileID: -4375988739210016320}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,6 +68,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7020319321420987567}
+  - {fileID: 272218031069978924}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4508697167044844863
@@ -115,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentState:
     _value: 0
+  _faceDirection:
+    _value: 0
   _movement: {fileID: 8158575758682650968}
   _groundChecker: {fileID: 1797790083484291891}
   _isGrounded:
@@ -179,6 +213,7 @@ MonoBehaviour:
   _groundLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  _enableBypasss: 1
   _drawGizmos: 1
 --- !u!114 &-4375988739210016320
 MonoBehaviour:
@@ -204,7 +239,7 @@ GameObject:
   - component: {fileID: 545529925530678722}
   - component: {fileID: 4144728052131652911}
   - component: {fileID: 3604730750329378787}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 4144728052131652911}
   _spriteRenderer: {fileID: 545529925530678722}
-  _defaultFacingDirection: 1
+  _defaultFaceDirection: 1
   _flipOnDirectionChanged: 1
   _defaultAnimationSpeed: 1
   _animationPrefix: 

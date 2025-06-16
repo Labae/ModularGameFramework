@@ -72,6 +72,17 @@ namespace MarioGame.Gameplay.Extensions
             };
         }
 
+        public static bool CanFire(this PlayerStateType state)
+        {
+            return state switch
+            {
+                PlayerStateType.Idle => true,
+                PlayerStateType.Run => true,
+                PlayerStateType.Crouch => true,
+                _ => false,
+            };
+        }
+
         /// <summary>
         /// 상태 전환이 유효한지 확인
         /// </summary>

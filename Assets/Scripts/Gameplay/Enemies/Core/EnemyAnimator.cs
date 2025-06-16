@@ -24,7 +24,7 @@ namespace MarioGame.Gameplay.Enemies.Core
         private void OnDestroy()
         {
             _status.CurrentState.OnValueChanged -= OnStateChanged;
-            _status.HorizontalVelocity.OnValueChanged -= UpdateDirection;
+            _status.FaceDirection.OnValueChanged -= UpdateDirection;
         }
 
         private void SetupEnemyStatusListeners()
@@ -36,7 +36,7 @@ namespace MarioGame.Gameplay.Enemies.Core
             }
 
             _status.CurrentState.OnValueChanged += OnStateChanged;
-            _status.HorizontalVelocity.OnValueChanged += UpdateDirection;
+            _status.FaceDirection.OnValueChanged += UpdateDirection;
         }
     }
 }

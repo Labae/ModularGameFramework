@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2851038431929313155
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997608899925559286}
+  m_Layer: 0
+  m_Name: Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &997608899925559286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851038431929313155}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6491317588879503590}
+  m_Father: {fileID: 4202646326460202727}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4777799530105671316
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,9 +51,10 @@ GameObject:
   - component: {fileID: -8206848731928879489}
   - component: {fileID: 5105180514091715992}
   - component: {fileID: 2309639277607582869}
+  - component: {fileID: 8490453047488015592}
   m_Layer: 0
   m_Name: Mario
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,6 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState:
+    _value: 0
+  _faceDirection:
     _value: 0
   _movement: {fileID: 7607978501017808068}
   _jump: {fileID: 2797004823867686373}
@@ -255,6 +290,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enableBypass: 1
+--- !u!114 &8490453047488015592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4777799530105671316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 574c486047ec44d3988b9ae8f88191e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 9026445189569901694, guid: ec9e46f69d73a4c98b012e59e63cf5db, type: 3}
+  _pivot: {fileID: 997608899925559286}
+  _firePosition: {fileID: 6491317588879503590}
+  _fireRate: 0.3
 --- !u!1 &5334976495196591241
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +337,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 997608899925559286}
   m_Father: {fileID: 401768598084919978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4209435085927945520
@@ -376,8 +428,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 6185527909420781831}
   _spriteRenderer: {fileID: 4209435085927945520}
-  _defaultFacingDirection: 1
+  _defaultFaceDirection: 1
   _flipOnDirectionChanged: 1
   _defaultAnimationSpeed: 1
   _animationPrefix: Player_
   _playerStatus: {fileID: 7938807162359307131}
+--- !u!1 &7848824334513804071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6491317588879503590}
+  m_Layer: 0
+  m_Name: FirePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6491317588879503590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7848824334513804071}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.8842858, y: 2.4442856, z: 0}
+  m_LocalScale: {x: 1.4285715, y: 1.4285715, z: 1.4285715}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 997608899925559286}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
