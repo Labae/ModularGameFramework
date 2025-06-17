@@ -35,7 +35,6 @@ namespace MarioGame.Gameplay.Player.States
         
         public override void OnUpdate()
         {
-
             CheckTransitions();
         }
 

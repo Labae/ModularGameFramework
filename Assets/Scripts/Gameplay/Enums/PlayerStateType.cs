@@ -44,6 +44,11 @@ namespace MarioGame.Gameplay.Enums
         Climb,
         
         /// <summary>
+        /// 데미지 상태
+        /// </sumdary>
+        Hurt,
+        
+        /// <summary>
         /// 사망 상태 - 체력이 0이 되었을 때
         /// </summary>
         Dead,

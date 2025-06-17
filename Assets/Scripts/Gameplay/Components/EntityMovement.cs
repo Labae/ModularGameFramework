@@ -17,6 +17,7 @@ namespace MarioGame.Gameplay.Components
         protected Rigidbody2D _rigidbody2D;
         protected float _currentHorizontalSpeed;
         
+        [SerializeField]
         protected EntityMovementLockType _lockType;
         
         public float HorizontalSpeed => _currentHorizontalSpeed;

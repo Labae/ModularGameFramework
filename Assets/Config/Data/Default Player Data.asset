@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05d1c0dac4df4f22841400cf5bce08cb, type: 3}
-  m_Name: Default Enemy Data
+  m_Name: Default Player Data
   m_EditorClassIdentifier: 
   EntityName: 
   Description: 

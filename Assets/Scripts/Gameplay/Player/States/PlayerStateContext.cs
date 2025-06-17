@@ -1,3 +1,4 @@
+using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Interfaces;
 using MarioGame.Gameplay.Player.Components;

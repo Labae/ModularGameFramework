@@ -134,11 +134,15 @@ namespace MarioGame.Gameplay.Components
         private void LockAllMovement()
         {
             _entityMovement?.AddLock(EntityMovementLockType.PhysicsReaction);
+            _entityJump?.AddLock(EntityMovementLockType.PhysicsReaction);
+            _entityClimb?.AddLock(EntityMovementLockType.PhysicsReaction);
         }
 
         private void UnlockAllMovement()
         {
             _entityMovement?.RemoveLock(EntityMovementLockType.PhysicsReaction);
+            _entityJump?.RemoveLock(EntityMovementLockType.PhysicsReaction);
+            _entityClimb?.RemoveLock(EntityMovementLockType.PhysicsReaction);
         }
 
         #endregion

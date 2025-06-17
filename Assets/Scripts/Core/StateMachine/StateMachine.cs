@@ -150,29 +150,28 @@ namespace MarioGame.Core.StateMachine
         /// <summary>
         /// 강제 상태 변경 (같은 상태여도 다시 Enter 호출)
         /// </summary>
-        /// <param name="stateType">변경할 상태 타입</param>
-        public void ForceChangeState(T stateType)
+        /// <param name="newStateType">변경할 상태 타입</param>
+        public void ForceChangeState(T newStateType)
         {
-            if (!_states.TryGetValue(stateType, out var state))
-            {
-                StateMachineLogWarning($"Cannot force change to non-existing state: {stateType}");
-                return;
-            }
-            
+            Assert.IsTrue(_states.ContainsKey(newStateType), $"Cannot change state with non-existing state: {newStateType}");
+            T previousStateType = default;
             if (_currentState != null)
             {
-                var previousStateType = _currentState.StateType;
-            
-                // 이전 상태 종료
-                _currentState?.OnExit();
-            
-                // 새 상태로 전환
-                _currentState = state;
-                _currentStateType = stateType;
-            
-                StateMachineLog("State changed:", previousStateType, "->", stateType);
+                previousStateType = _currentState.StateType;
             }
+            
+            // 이전 상태 종료
+            _currentState?.OnExit();
+
+            // 새 상태로 전환
+            _currentState = _states[newStateType];
+            _currentStateType = newStateType;
+            
+            StateMachineLog("State changed:", previousStateType, "->", newStateType);
+
+            // 새 상태 진입
             _currentState?.OnEnter();
+            OnStateChanged?.Invoke(newStateType, previousStateType);
         }
 
         /// <summary>

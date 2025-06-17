@@ -31,6 +31,7 @@ namespace MarioGame.Core.Entities
         protected Dictionary<TStateType, string> _stateAnimationMap = new();
         protected Dictionary<TStateType, int> _stateAnimationHashMap = new();
         
+        [SerializeField]
         protected TStateType _currentState;
         
         protected HorizontalDirectionType _currentFaceDireciton = HorizontalDirectionType.Right;

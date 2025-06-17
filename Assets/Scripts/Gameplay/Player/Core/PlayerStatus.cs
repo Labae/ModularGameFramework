@@ -19,6 +19,8 @@ namespace MarioGame.Gameplay.Player.Core
     {
         [Header("Observed Components")]
         [SerializeField]
+        private EntityHealth _health;
+        [SerializeField]
         private PlayerMovement _movement;
 
         [SerializeField]
@@ -34,6 +36,10 @@ namespace MarioGame.Gameplay.Player.Core
         private LadderChecker _ladderChecker;
 
         [Header("Observable States")] 
+        [SerializeField] private ObservableProperty<int> _currentHealth = new(0);
+        [SerializeField] private ObservableBool _isAlive = new();
+
+        
         [Header("Checks")]
         [SerializeField]
         private ObservableBool _isGrounded = new();
@@ -54,6 +60,9 @@ namespace MarioGame.Gameplay.Player.Core
         [SerializeField] private ObservableProperty<float> _currentSpeed = new(0f);
         [SerializeField] private ObservableProperty<float> _climbSpeed = new(0f);
 
+        public ObservableProperty<int> CurrentHealth => _currentHealth;
+        public ObservableBool IsAlive => _isAlive;
+        
         public ObservableBool IsGrounded => _isGrounded;
         public ObservableBool IsRising => _isRising;
         public ObservableBool IsFalling => _isFalling;
@@ -68,6 +77,9 @@ namespace MarioGame.Gameplay.Player.Core
         public ObservableProperty<float> VerticalVelocity => _verticalVelocity;
         public ObservableProperty<float> CurrentSpeed => _currentSpeed;
         public ObservableProperty<float> ClimbSpeed => _climbSpeed;
+        
+        public int CurrentHealthValue => _currentHealth.Value;
+        public bool IsAliveValue => _isAlive.Value;
         
         public bool IsGroundedValue => _isGrounded.Value;
         public bool IsRisingValue => !IsClimbingValue && _isRising.Value;
@@ -92,17 +104,22 @@ namespace MarioGame.Gameplay.Player.Core
             _groundChecker ??= GetComponentInChildren<GroundChecker>();
             _ladderChecker ??= GetComponentInChildren<LadderChecker>();
             _climb ??= GetComponent<PlayerClimb>();
+            _health ??= GetComponent<EntityHealth>();
             
             AssertIsNotNull(_movement, "PlayerMovement component required");
             AssertIsNotNull(_jump, "PlayerJump component required");
             AssertIsNotNull(_groundChecker, "GroundChecker component required");
             AssertIsNotNull(_ladderChecker, "LadderChecker component required");
             AssertIsNotNull(_climb, "PlayerClimb component required");
+            AssertIsNotNull(_health, "EntityHealth component required");
         }
 
         protected override void UpdateStates()
         {
             base.UpdateStates();
+            
+            _isAlive.Value = _health.IsAlive;
+            _currentHealth.Value = _health.CurrentHealth;
 
             if (HorizontalVelocityValue > FloatUtility.VELOCITY_THRESHOLD)
             {

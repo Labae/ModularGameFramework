@@ -3,6 +3,7 @@ using MarioGame.Core;
 using MarioGame.Core.Extensions;
 using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Config.Movement;
+using MarioGame.Gameplay.Enums;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Components
@@ -14,6 +15,9 @@ namespace MarioGame.Gameplay.Components
         private ClimbMovementConfig _climbConfig;
 
         private Rigidbody2D _rigidbody2D;
+        [SerializeField]
+        protected EntityMovementLockType _lockType;
+        
         [SerializeField]
         private LadderChecker _ladderChecker;
 
@@ -28,6 +32,7 @@ namespace MarioGame.Gameplay.Components
 
         public bool CanStartClimbing => !_isClimbing && _ladderChecker != null && _ladderChecker.IsOnLadder
                                         && _climbConfig != null;
+        public bool IsMovementLocked => _lockType != EntityMovementLockType.None;
 
         public void Initialize(ClimbMovementConfig config)
         {
@@ -47,6 +52,16 @@ namespace MarioGame.Gameplay.Components
             
             AssertIsNotNull(_rigidbody2D, "rigidbody2D required");
             AssertIsNotNull(_ladderChecker, "_ladderChecker required");
+        }
+        
+        public void AddLock(EntityMovementLockType lockType)
+        {
+            _lockType |= lockType;
+        }
+
+        public void RemoveLock(EntityMovementLockType lockType)
+        {
+            _lockType &= ~lockType;
         }
 
         public virtual void StartClimbing()
@@ -89,6 +104,11 @@ namespace MarioGame.Gameplay.Components
 
         public virtual void ClimbUp(float multiplier = 1.0f)
         {
+            if (IsMovementLocked)
+            {
+                return;
+            }
+            
             if (!_isClimbing || _climbConfig == null)
             {
                 return;
@@ -101,6 +121,11 @@ namespace MarioGame.Gameplay.Components
         
         public virtual void ClimbDown(float multiplier = 1.0f)
         {
+            if (IsMovementLocked)
+            {
+                return;
+            }
+            
             if (!_isClimbing || _climbConfig == null)
             {
                 return;
@@ -141,6 +166,11 @@ namespace MarioGame.Gameplay.Components
 
         public virtual void JumpFromLadder(float jumpForceMultiplier = 1.0f)
         {
+            if (IsMovementLocked)
+            {
+                return;
+            }
+            
             if (!_isClimbing || _climbConfig == null)
             {
                 return;

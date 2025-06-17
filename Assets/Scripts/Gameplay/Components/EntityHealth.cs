@@ -41,6 +41,12 @@ namespace MarioGame.Gameplay.Components
 
         public void TakeDamage(DamageInfo damageInfo)
         {
+            if (_data == null)
+            {
+                AssertIsNotNull(_data, "EntityData required");
+                return;
+            }
+            
             if (!CanTakeDamage)
             {
                 Log($"Cannot take damage: Alive:{IsAlive}, Invincible={IsInvincible}");
@@ -67,6 +73,12 @@ namespace MarioGame.Gameplay.Components
 
         public void Heal(int amount)
         {
+            if (_data == null)
+            {
+                AssertIsNotNull(_data, "EntityData required");
+                return;
+            }
+            
             if (!IsAlive)
             {
                 return;
