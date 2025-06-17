@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using MarioGame.Core.Data;
 using MarioGame.Core.Entities;
 using MarioGame.Core.StateMachine;
+using MarioGame.Gameplay.Components;
+using MarioGame.Gameplay.Config.Data;
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Enemies.Components;
 using MarioGame.Gameplay.Enemies.States;
@@ -14,15 +16,18 @@ namespace MarioGame.Gameplay.Enemies.Core
 {
     [RequireComponent(typeof(EnemyStatus))]
     [RequireComponent(typeof(EnemyMovement))]
+    [RequireComponent(typeof(EntityHealth))]
     [DisallowMultipleComponent]
     public class EnemyController : Entity
     {
+        [SerializeField] private EntityData _data;
+        [SerializeField] private EnemyMovementConfig _config;
+        
         // StateMachine
         private StateMachine<EnemyStateType> _stateMachine;
 
         private EnemyStatus _status;
-
-        [SerializeField] private EnemyMovementConfig _config;
+        private EntityHealth _health;
         private EnemyMovement _movement;
 
         private AIInputProvider _inputProvider;
@@ -42,16 +47,19 @@ namespace MarioGame.Gameplay.Enemies.Core
             _status = GetComponent<EnemyStatus>();
             _inputProvider = new AIInputProvider();
             _movement = GetComponent<EnemyMovement>();
+            _health = GetComponent<EntityHealth>();
             _importedEnemy = GetComponent<LDtkImportedEnemy>();
             AssertIsNotNull(_status, "EnemyStatus component required");
             AssertIsNotNull(_movement, "EnemyMovement component required");
             AssertIsNotNull(_importedEnemy, "LDtkFields component required");
+            AssertIsNotNull(_health, "EntityHealth component required");
         }
         
         public override void Initialize()
         {
             base.Initialize();
             _movement.Initialize(_config);
+            _health.Initialize(_data);
             _stateMachine.Start(EnemyStateType.Idle);
         }
         

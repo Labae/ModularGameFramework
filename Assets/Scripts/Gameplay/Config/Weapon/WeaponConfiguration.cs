@@ -167,6 +167,11 @@ namespace MarioGame.Gameplay.Config.Weapon
             return false;
         }
 
+        public virtual LayerMask GetCombatLayerMask()
+        {
+            return WallLayers | EnemyLayers | DestructibleLayers;
+        } 
+
         /// <summary>
         /// 타겟의 분류 정보 반환 (디버그/로그용)
         /// </summary>

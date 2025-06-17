@@ -7,6 +7,7 @@ using MarioGame.Gameplay.Config.Weapon;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Interfaces.Combat;
 using MarioGame.Gameplay.Interfaces.Projectiles;
+using MarioGame.Gameplay.Physics.EntityCollision;
 using MarioGame.Gameplay.Physics.ProjectileCollision.Core;
 using UnityEngine;
 
@@ -96,7 +97,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// WeaponConfiguration을 받아서 투사체 발사
         /// 모든 설정이 WeaponConfiguration에서 온다
         /// </summary>
-        public virtual void Fire(Vector2 startPosition, Vector2 direction, WeaponConfiguration weaponConfig)
+        public void Fire(Vector2 startPosition, Vector2 direction, WeaponConfiguration weaponConfig)
         {
             if (weaponConfig == null)
             {
@@ -192,7 +193,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// WeaponConfiguration 타입별 발사 시 커스터마이징
         /// Pattern Matching으로 실제 하위 클래스별 특수 설정
         /// </summary>
-        protected virtual void OnFireCustomization(WeaponConfiguration weaponConfig)
+        private void OnFireCustomization(WeaponConfiguration weaponConfig)
         {
             // 투사체 애니메이션 설정 (WeaponConfig 기반)
             SetupProjectileAnimation(weaponConfig);
@@ -263,7 +264,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// 최적화된 충돌 검사기 생성 (WeaponConfig 타입 기반)
         /// Factory를 통해 적절한 구현체 생성
         /// </summary>
-        protected virtual void InitializeCollisionChecker(WeaponConfiguration weaponConfig)
+        private void InitializeCollisionChecker(WeaponConfiguration weaponConfig)
         {
             // Factory를 통해 WeaponConfig 타입에 맞는 충돌 검사기 생성
             _collisionChecker = ProjectileCollisionFactory.CreateForProjectileType(weaponConfig.ProjectileType);
@@ -279,7 +280,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 투사체 업데이트 (WeaponConfig 기반)
         /// </summary>
-        public virtual void UpdateProjectile()
+        public void UpdateProjectile()
         {
             if (!_isActive || _currentWeaponConfig == null)
                 return;
@@ -408,7 +409,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 수명 만료 시 처리
         /// </summary>
-        protected virtual void OnLifetimeExpired()
+        private void OnLifetimeExpired()
         {
             Log("Projectile lifetime expired");
             DestroyProjectile();
@@ -422,7 +423,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// 충돌 검사 (WeaponConfig 기반)
         /// 새로운 인터페이스 시스템 사용
         /// </summary>
-        protected virtual void CheckCollisions()
+        private void CheckCollisions()
         {
             if (_collisionChecker == null)
                 return;
@@ -508,7 +509,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// ProjectileHitData 기반 관통 가능 여부 체크
         /// Pattern Matching으로 실제 하위 클래스별 관통 로직 처리
         /// </summary>
-        public virtual bool CanPenetrate(ProjectileHitData hitData)
+        public bool CanPenetrate(ProjectileHitData hitData)
         {
             // Pattern Matching을 사용한 관통 가능 여부 체크
             var canPenetrate = _currentWeaponConfig switch
@@ -529,13 +530,10 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 실제 히트 처리 - WeaponConfig와 ProjectileType 기반
         /// </summary>
-        public virtual void ProcessHit(ProjectileHitData hitData, HitTargetType hitType)
+        public void ProcessHit(ProjectileHitData hitData, HitTargetType hitType)
         {
             // 히트 처리 로직
             HandleHit(hitData, hitType);
-            
-            // 이펙트 생성
-            CreateHitEffect(hitData, hitType);
             
             // 이벤트 발생 (IProjectileEvents와 일치)
             OnHitTarget?.Invoke(hitData);
@@ -544,18 +542,26 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// WeaponConfig와 ProjectileType 기반 히트 처리
         /// </summary>
-        protected virtual void HandleHit(ProjectileHitData hitData, HitTargetType hitType)
+        private void HandleHit(ProjectileHitData hitData, HitTargetType hitType)
         {
             switch (hitType)
             {
                 case HitTargetType.Entity:
-                    HandleEntityHit(hitData);
+                    if (TryHandleEntityHit(hitData))
+                    {
+                        CreateHitEffect(hitData, hitType);
+                    }
                     break;
                 case HitTargetType.Destructible:
-                    HandleDestructibleHit(hitData);
+                    if (TryHandleDestructibleHit(hitData))
+                    {
+                        CreateHitEffect(hitData, hitType);
+                    }
+
                     break;
                 case HitTargetType.Wall:
                     HandleWallHit(hitData);
+                    CreateHitEffect(hitData, hitType);
                     break;
                 default:
                     HandleUnknownHit(hitData);
@@ -609,7 +615,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 엔티티 충돌 처리 (WeaponConfig의 적/아군 구분 + 타입별 데미지 적용)
         /// </summary>
-        private void HandleEntityHit(ProjectileHitData hitData)
+        private bool TryHandleEntityHit(ProjectileHitData hitData)
         {
             var entity = hitData.HitCollider;
             
@@ -618,32 +624,32 @@ namespace MarioGame.Gameplay.Projectiles
             {
                 var classification = _currentWeaponConfig.GetTargetClassification(entity);
                 Log($"Hit {classification} entity: {entity.name} (no damage - friendly fire disabled)");
-                return;
+                return false;
             }
             
-            // IDamageable 인터페이스를 통한 데미지 처리
-            var damageable = entity.GetComponent<IDamageable>();
-            if (damageable != null)
+            var hurtBox = entity.GetComponent<EntityHurtBox>();
+            if (hurtBox != null)
             {
                 // Pattern Matching으로 타입별 데미지 계산
                 var finalDamage = CalculateDamage(hitData);
                 var damageDirection = (hitData.HitPoint - position2D).normalized;
                 
-                damageable.TakeDamage(finalDamage, hitData.HitPoint, damageDirection);
-                
+                bool success = hurtBox.TryApplyDamage(finalDamage, hitData.HitPoint, damageDirection);
                 var classification = _currentWeaponConfig.GetTargetClassification(entity);
                 Log($"Dealt {finalDamage} damage to {classification} entity: {entity.name}");
+                return success;
             }
             else
             {
-                Log($"Hit entity: {entity.name} (no IDamageable component)");
+                Log($"Hit entity: {entity.name} (no EntityHurtBox component)");
+                return false;
             }
         }
 
         /// <summary>
         /// 파괴 가능한 오브젝트 충돌 처리 (WeaponConfig 타입별 데미지 사용)
         /// </summary>
-        private void HandleDestructibleHit(ProjectileHitData hitData)
+        private bool TryHandleDestructibleHit(ProjectileHitData hitData)
         {
             var destructible = hitData.HitCollider.GetComponent<IDestructible>();
             if (destructible != null)
@@ -652,7 +658,10 @@ namespace MarioGame.Gameplay.Projectiles
                 var finalDamage = CalculateDamage(hitData);
                 destructible.Destroy(hitData.HitPoint, finalDamage);
                 Log($"Destroyed {hitData.HitCollider.name} with {finalDamage} damage");
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>
@@ -780,7 +789,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 투사체 파괴
         /// </summary>
-        public virtual void DestroyProjectile()
+        public void DestroyProjectile()
         {
             if (!_isActive)
                 return;
@@ -800,7 +809,7 @@ namespace MarioGame.Gameplay.Projectiles
         /// <summary>
         /// 파괴 이펙트 생성 (선택사항)
         /// </summary>
-        protected virtual void CreateDestroyEffect()
+        private void CreateDestroyEffect()
         {
             // ProjectileType별 특별한 파괴 이펙트가 필요하다면 여기서 구현
         }

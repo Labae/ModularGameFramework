@@ -68,18 +68,29 @@ namespace MarioGame.Gameplay.Weapons
             var baseFirePosition = _firePosition.position.ToVector2();
             var playerPos = entityPosition.WithY(_firePosition.position.y); 
             var distance = Vector2.Distance(playerPos, baseFirePosition);
-            var direction = (playerPos - baseFirePosition).normalized;
-            var raycastHit = Physics2D.Raycast(baseFirePosition, direction, distance, _config.WallLayers);
-
+            var direction = (baseFirePosition - playerPos).normalized;
+    
+            // 1단계: Raycast로 경로상 벽 체크
+            var raycastHit = Physics2D.Raycast(playerPos, direction, distance, _config.GetCombatLayerMask());
+    
             if (raycastHit.collider != null)
             {
-                // 실제 경로상의 벽 충돌 지점
-                var hitPoint = raycastHit.point;
-                var offsetFromWall = direction * _config.SafeFireDistance;
-                return hitPoint + offsetFromWall;
+                // 벽이 있다면 안전 위치 계산
+                var safePosition = raycastHit.point - (direction * _config.SafeFireDistance);
+                return safePosition;
             }
-            
+    
             return baseFirePosition;
+        }
+
+        private Vector2 AdjustPositionForOverlap(Vector2 position, Collider2D overlap, Vector2 direction)
+        {
+            // 겹치는 콜라이더에서 가장 가까운 점 찾기
+            var closestPoint = overlap.ClosestPoint(position);
+            var adjustDirection = (position - closestPoint).normalized;
+    
+            // 추가로 밀어내기
+            return position + adjustDirection * _config.SafeFireDistance;
         }
     }
 }

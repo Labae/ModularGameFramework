@@ -10,7 +10,7 @@ namespace MarioGame.Gameplay.Enemies.States
     {
         protected readonly EnemyStatus _status;
         protected readonly EnemyStateContext _context;
-        
+
         protected EnemyBaseState(StateMachine<EnemyStateType> stateMachine,
             IDebugLogger logger, EnemyStatus status, EnemyStateContext context) : base(stateMachine, logger)
         {
@@ -18,13 +18,18 @@ namespace MarioGame.Gameplay.Enemies.States
             _context = context;
         }
 
+        protected bool CheckDeathTransition()
+        {
+            return _status.IsAliveValue;
+        }
+
         protected void StopMovement()
         {
-                _context.InputProvider
-                    .SetMoveDirection(0);
+            _context.InputProvider
+                .SetMoveDirection(0);
 
-                var idleIntent = MovementIntentFactory.CreateIdle();
-                _context.IntentReceiver.SetMovementIntent(idleIntent);
+            var idleIntent = MovementIntentFactory.CreateIdle();
+            _context.IntentReceiver.SetMovementIntent(idleIntent);
         }
     }
 }

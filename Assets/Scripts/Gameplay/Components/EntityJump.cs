@@ -13,9 +13,9 @@ namespace MarioGame.Gameplay.Components
         [SerializeField]
         protected GroundChecker _groundChecker;
         
-        public float VerticalVelocity { get; private set; }
+        public float VerticalVelocity => _rigidbody2D.velocity.y;
         public bool IsGrounded => _groundChecker.IsGrounded;
-        public bool IsFalling => _rigidbody2D.velocity.y < -FloatUtility.VELOCITY_THRESHOLD;
+        public bool IsFalling => VerticalVelocity < -FloatUtility.VELOCITY_THRESHOLD;
         public bool IsRising => VerticalVelocity > FloatUtility.VELOCITY_THRESHOLD;
         
         protected override void CacheComponents()
@@ -29,14 +29,12 @@ namespace MarioGame.Gameplay.Components
 
         public virtual void SetVerticalVelocity(float velocity)
         {
-            VerticalVelocity = velocity;
-            _rigidbody2D.velocity = _rigidbody2D.velocity.WithY(VerticalVelocity);
+            _rigidbody2D.velocity = _rigidbody2D.velocity.WithY(velocity);
         }
 
         public virtual void AddVerticalVelocity(float velocity)
         {
-            VerticalVelocity = velocity;
-            _rigidbody2D.velocity = _rigidbody2D.velocity.AddY(VerticalVelocity);
+            _rigidbody2D.velocity = _rigidbody2D.velocity.AddY(velocity);
         }
 
         public abstract bool TryJump(float forceMultiplier = 1.0f);

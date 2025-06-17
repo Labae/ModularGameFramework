@@ -25,8 +25,6 @@ MonoBehaviour:
   ProjectileChargeAnimation: {fileID: 0}
   FireRate: 0.3
   SafeFireDistance: 0.1
-  BurstCount: 1
-  BurstDelay: 0.1
   EnemyLayers:
     serializedVersion: 2
     m_Bits: 512

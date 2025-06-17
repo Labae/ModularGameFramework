@@ -1,7 +1,7 @@
-using System;
 using MarioGame.Core;
 using MarioGame.Core.Extensions;
 using MarioGame.Core.Utilities;
+using MarioGame.Gameplay.Enums;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Components
@@ -17,10 +17,13 @@ namespace MarioGame.Gameplay.Components
         protected Rigidbody2D _rigidbody2D;
         protected float _currentHorizontalSpeed;
         
+        protected EntityMovementLockType _lockType;
+        
         public float HorizontalSpeed => _currentHorizontalSpeed;
         public float CurrentSpeed => Mathf.Abs(_currentHorizontalSpeed);
         public bool IsMoving => !FloatUtility.IsVelocityZero(_currentHorizontalSpeed);
-
+        public bool IsMovementLocked => _lockType != EntityMovementLockType.None;
+        
         protected override void CacheComponents()
         {
             base.CacheComponents();
@@ -30,15 +33,39 @@ namespace MarioGame.Gameplay.Components
             AssertIsNotNull(_rigidbody2D, "Rigidbody2D required");
         }
 
-        public virtual void SetHorizontalVelocity(float velocity)
+        protected void SetHorizontalVelocity(float velocity)
         {
+            if (IsMovementLocked)
+            {
+                return;
+            }
+            
             _currentHorizontalSpeed = velocity;
             _rigidbody2D.velocity = _rigidbody2D.velocity.WithX(velocity);
         }
 
-        public virtual void ModifyHorizontalVelocity(float multiplier)
+        protected void ModifyHorizontalVelocity(float multiplier)
         {
+            if (IsMovementLocked)
+            {
+                return;
+            }
+            
             SetHorizontalVelocity(_currentHorizontalSpeed * multiplier);
+        }
+        
+        public void AddLock(EntityMovementLockType lockType)
+        {
+            _lockType |= lockType;
+        }
+
+        public void RemoveLock(EntityMovementLockType lockType)
+        {
+            _lockType &= ~lockType;
+            if (!IsMovementLocked)
+            {
+                Stop();
+            }
         }
         
         public abstract void ApplyAcceleration(float inputDirection, float speedMultiplier = 1);
@@ -50,10 +77,6 @@ namespace MarioGame.Gameplay.Components
             SetHorizontalVelocity(0);
         }
 
-        public virtual void ApplyKnockback(float force)
-        {
-            var knockbackVelocity = Mathf.Sign(transform.position.x) * force;
-            SetHorizontalVelocity(knockbackVelocity);
-        }
+
     }
 }

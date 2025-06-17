@@ -14,12 +14,17 @@ namespace MarioGame.Gameplay.Enemies.Core
     {
         [Header("Observed Components")]
         [SerializeField]
+        private EntityHealth _health;
+        [SerializeField]
         private EnemyMovement _movement;
         
         [SerializeField]
         private GroundChecker _groundChecker;
         
         [Header("Observable States")] 
+        [SerializeField] private ObservableProperty<int> _currentHealth = new(0);
+        [SerializeField] private ObservableBool _isAlive = new();
+
         [SerializeField]
         private ObservableBool _isGrounded = new();
         
@@ -28,10 +33,15 @@ namespace MarioGame.Gameplay.Enemies.Core
         [SerializeField] private ObservableProperty<float> _horizontalVelocity = new(0f);
         [SerializeField] private ObservableProperty<float> _currentSpeed = new(0f);
 
+        public ObservableProperty<int> CurrentHealth => _currentHealth;
+        public ObservableBool IsAlive => _isAlive;
         public ObservableBool IsGrounded => _isGrounded;
         public ObservableBool IsMoving => _isMoving;
         public ObservableProperty<float> HorizontalVelocity => _horizontalVelocity;
         public ObservableProperty<float> CurrentSpeed => _currentSpeed;
+        
+        public int CurrentHealthValue => _currentHealth.Value;
+        public bool IsAliveValue => _isAlive.Value;
         public bool IsGroundedValue => _isGrounded.Value;
         public bool IsMovingValue => _isMoving.Value;
         public float CurrentSpeedValue => _currentSpeed.Value;
@@ -42,13 +52,18 @@ namespace MarioGame.Gameplay.Enemies.Core
             base.CacheComponents();
             _movement = GetComponent<EnemyMovement>();
             _groundChecker = GetComponent<GroundChecker>();
+            _health = GetComponent<EntityHealth>();
             
             AssertIsNotNull(_movement, "EnemyMovement component required");
             AssertIsNotNull(_groundChecker, "GroundChecker component required");
+            AssertIsNotNull(_health, "EntityHealth component required");
         }
         
         protected override void UpdateStates()
         {
+            _isAlive.Value = _health.IsAlive;
+            _currentHealth.Value = _health.CurrentHealth;
+            
             if (HorizontalVelocityValue > FloatUtility.VELOCITY_THRESHOLD)
             {
                 _faceDirection.Value = HorizontalDirectionType.Right;

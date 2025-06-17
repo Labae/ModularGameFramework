@@ -2289,6 +2289,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1126631538968559543, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
+      propertyPath: _enableShake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 913947171070993033, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
       propertyPath: m_ColliderPaths.Array.size
       value: 1
