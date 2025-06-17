@@ -8,7 +8,6 @@ using UnityEngine;
 namespace MarioGame.Gameplay.Components
 {
     [RequireComponent(typeof(Entity))]
-    [RequireComponent(typeof(GroundChecker))]
     [DisallowMultipleComponent]
     public class EntityBypass : CoreBehaviour
     {
@@ -16,6 +15,7 @@ namespace MarioGame.Gameplay.Components
         private bool _enableBypass = true;
 
         private Entity _entity;
+        [SerializeField]
         private GroundChecker _groundChecker;
         private IInputProvider _inputProvider;
 
@@ -25,7 +25,7 @@ namespace MarioGame.Gameplay.Components
         {
             base.CacheComponents();
             _entity = GetComponent<Entity>();
-            _groundChecker = GetComponent<GroundChecker>();
+            _groundChecker ??= GetComponentInChildren<GroundChecker>();
 
             AssertIsNotNull(_entity, "Entity required");
             AssertIsNotNull(_groundChecker, "GroundChecker required");
@@ -49,9 +49,15 @@ namespace MarioGame.Gameplay.Components
 
         private void CheckBypassInput()
         {
+            if (!_groundChecker.CanBypass)
+            {
+                return;
+            }
+            
             var verticalInput = _inputProvider.VerticalInput;
             if (!FloatUtility.IsInputActive(verticalInput))
             {
+                _wasPressingDown = false;
                 return;
             }
 
@@ -67,20 +73,7 @@ namespace MarioGame.Gameplay.Components
 
         private void TryBypass(float verticalInput)
         {
-            if (!_groundChecker.CanBypass)
-            {
-                return;
-            }
-
             var success = _groundChecker.CurrentBypassable.TryBypass(_entity);
-            if (success)
-            {
-                Log("Bypass success");
-            }
-            else
-            {
-                Log("Bypass failed");
-            }
         }
 
         public bool ForceBypass()

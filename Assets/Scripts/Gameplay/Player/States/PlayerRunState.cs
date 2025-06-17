@@ -78,14 +78,13 @@ namespace MarioGame.Gameplay.Player.States
                 }
             }
             
-            if (_context.InputProvider.CrouchHeld)
-            {
-                ChangeState(PlayerStateType.Crouch);
-                return;
-            }
-
             if (!HasMovementInput())
             {
+                if (_context.InputProvider.CrouchHeld)
+                {
+                    ChangeState(PlayerStateType.Crouch);
+                    return;
+                }
                 ChangeState(PlayerStateType.Idle);
             }
         }

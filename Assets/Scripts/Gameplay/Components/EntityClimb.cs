@@ -1,3 +1,4 @@
+using System;
 using MarioGame.Core;
 using MarioGame.Core.Extensions;
 using MarioGame.Core.Utilities;
@@ -7,13 +8,13 @@ using UnityEngine;
 namespace MarioGame.Gameplay.Components
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    [RequireComponent(typeof(LadderChecker))]
     [DisallowMultipleComponent]
     public class EntityClimb : CoreBehaviour
     {
         private ClimbMovementConfig _climbConfig;
 
         private Rigidbody2D _rigidbody2D;
+        [SerializeField]
         private LadderChecker _ladderChecker;
 
         protected bool _isClimbing;
@@ -42,7 +43,7 @@ namespace MarioGame.Gameplay.Components
         {
             base.CacheComponents();
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            _ladderChecker = GetComponent<LadderChecker>();
+            _ladderChecker = GetComponentInChildren<LadderChecker>();
             
             AssertIsNotNull(_rigidbody2D, "rigidbody2D required");
             AssertIsNotNull(_ladderChecker, "_ladderChecker required");

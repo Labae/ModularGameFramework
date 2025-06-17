@@ -14,6 +14,11 @@ namespace MarioGame.Gameplay.Enums
         Idle = 0,
         
         /// <summary>
+        /// 정지 총 쏘기
+        /// </summary>
+        IdleShoot,
+        
+        /// <summary>
         /// 달리기 상태 - 땅에서 좌우 이동
         /// </summary>
         Run,

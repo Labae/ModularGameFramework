@@ -41,7 +41,6 @@ namespace MarioGame.Gameplay.Config.Input
         {
             JumpPressed = false;
             JumpReleased = false;
-            FirePressed = false;
         }
 
         public void OnHorizontal(InputAction.CallbackContext context)
@@ -76,10 +75,7 @@ namespace MarioGame.Gameplay.Config.Input
 
         public void OnFire(InputAction.CallbackContext context)
         {
-            if (context.started)
-            {
-                FirePressed = true;
-            }
+            FirePressed = context.ReadValueAsButton();
         }
     }
 }

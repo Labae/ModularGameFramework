@@ -65,5 +65,10 @@ namespace MarioGame.Gameplay.Enemies.Core
             _horizontalVelocity.Value = _movement.HorizontalSpeed;
             _currentSpeed.Value = _movement.CurrentSpeed;
         }
+
+        public override bool CanFire()
+        {
+            return false;
+        }
     }
 }

@@ -11,7 +11,6 @@ namespace MarioGame.Gameplay.Components
     /// 사다리 감지를 담당하는 컴포넌트
     /// 플레이어가 사다리 근처에 있는지, 사다리 위/아래 끝에 있는지 감지
     /// </summary>
-    [RequireComponent(typeof(Collider2D))]
     public class LadderChecker : CoreBehaviour
     {
         [Header("Ladder Detection")] [SerializeField, Min(0.1f)]
@@ -28,6 +27,7 @@ namespace MarioGame.Gameplay.Components
         private bool _isAtLadderTop;
         private bool _isAtLadderBottom;
 
+        [SerializeField]
         private Collider2D _collider2D;
         private Ladder _currentLadder;
 
@@ -42,7 +42,7 @@ namespace MarioGame.Gameplay.Components
         protected override void CacheComponents()
         {
             base.CacheComponents();
-            _collider2D = GetComponent<Collider2D>();
+            _collider2D ??= GetComponentInChildren<Collider2D>();
             AssertIsNotNull(_collider2D, "Collider2D Required");
 
             _ladderCheckHits = new RaycastHit2D[_ladderCheckRayCount + 1];

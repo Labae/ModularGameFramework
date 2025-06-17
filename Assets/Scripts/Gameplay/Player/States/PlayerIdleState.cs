@@ -10,10 +10,10 @@ namespace MarioGame.Gameplay.Player.States
     {
         public override PlayerStateType StateType => PlayerStateType.Idle;
 
-        public PlayerIdleState(StateMachine<PlayerStateType> stateMachine, IDebugLogger logger, PlayerStatus status, PlayerStateContext context) : base(stateMachine, logger, status, context)
+        public PlayerIdleState(StateMachine<PlayerStateType> stateMachine,
+            IDebugLogger logger, PlayerStatus status, PlayerStateContext context) : base(stateMachine, logger, status, context)
         {
         }
-
 
         public override void OnEnter()
         {
@@ -21,6 +21,9 @@ namespace MarioGame.Gameplay.Player.States
 
             var intent = MovementIntentFactory.CreateIdle();
             _context.IntentReceiver.SetMovementIntent(intent);
+
+            _context.Weapon.OnFired += OnFired;
+            
             StateLog("Player entered idle state");
         }
 
@@ -35,10 +38,16 @@ namespace MarioGame.Gameplay.Player.States
 
         public override void OnExit()
         {
+            _context.Weapon.OnFired -= OnFired;
             base.OnExit();
             StateLog("Player exited idle state");
         }
-
+        
+        private void OnFired()
+        {
+            ChangeState(PlayerStateType.IdleShoot);
+        }
+        
         private void CheckTransitions()
         {
             if (CheckClimbTransition())

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c50e5c9246b46c4b0ffc146cb890a05, type: 3}
+  m_Name: Player Piercing Hit Anim
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 1783347349, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: 2031216588, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: -589156412, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: -1318131115, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: 820547984, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: -1283646968, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  - {fileID: 76819248, guid: 091b80aebd4034e068a20bfb178f1d7a, type: 3}
+  frameRate: 20
+  loop: 0
+  autoStart: 1
+  randomScale: 0
+  scaleRange: {x: 0.25, y: 0.35}
+  randomRotation: 0
+  rotationRange: {x: 0, y: 360}
+  fadeOut: 1
+  fadeOutDuration: 0.3
+  rotateWithDirection: 0
+  rotationOffset: 0
+  previewInEditor: 0

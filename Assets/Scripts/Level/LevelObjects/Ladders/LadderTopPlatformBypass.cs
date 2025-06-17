@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using MarioGame.Core;
 using MarioGame.Core.Entities;
+using MarioGame.Core.Utilities;
 using MarioGame.Level.Interfaces;
 using UnityEngine;
 
@@ -41,23 +42,24 @@ namespace MarioGame.Level.LevelObjects.Ladders
                 return false;
             }
 
-            var entityCollider = entity.GetComponent<Collider2D>();
+            var entityCollider = entity.GetComponentInChildren<Collider2D>();
             if (entityCollider == null)
             {
                 LogWarning("Failed to get collider from entity");
                 return false;
             }
 
+            _isBypassing = true;
             StartCoroutine(BypassCoroutine(entity, entityCollider));
             return true;
         }
 
         private IEnumerator BypassCoroutine(Entity entity, Collider2D entityCollider)
         {
-            _isBypassing = true;
-            
             var platformBottom = _platformCollider.bounds.min.y;
             var platformTop = _platformCollider.bounds.max.y;
+
+            entity.transform.position += Vector3.down * 0.1f;
             var initEntityPosition = entity.position2D;
 
             Physics2D.IgnoreCollision(entityCollider, _platformCollider, true);
@@ -75,7 +77,6 @@ namespace MarioGame.Level.LevelObjects.Ladders
 
                 if (distanceFromStart >= _maxBypassDistance)
                 {
-                    Debug.Log("Bypass Distance");
                     break;
                 }
                 
@@ -89,7 +90,6 @@ namespace MarioGame.Level.LevelObjects.Ladders
 
                 if (hasEnteredPlatform && entityBottom > platformTop)
                 {
-                    Debug.Log($"Bypass Distance: {entityBottom} > {platformTop}");
                     break;
                 }
 
@@ -113,7 +113,7 @@ namespace MarioGame.Level.LevelObjects.Ladders
                 return;
             }
 
-            var entityCollider = entity.GetComponent<Collider2D>();
+            var entityCollider = entity.GetComponentInChildren<Collider2D>();
             if (entityCollider == null)
             {
                 LogWarning("Failed to get collider from entity");

@@ -204,7 +204,7 @@ MonoBehaviour:
   _entityId: 
   _isActive: 1
   _enableDebugLogs: 0
-  _endPointThreshold: 0.3
+  _endPointThreshold: 0.1
   _drawGizmos: 1
 --- !u!1 &9156360281714862446
 GameObject:

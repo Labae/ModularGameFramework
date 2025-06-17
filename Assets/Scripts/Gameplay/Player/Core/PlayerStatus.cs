@@ -5,6 +5,7 @@ using MarioGame.Core.Reactive;
 using MarioGame.Core.Utilities;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Enums;
+using MarioGame.Gameplay.Extensions;
 using MarioGame.Gameplay.Player.Components;
 using UnityEngine;
 
@@ -69,8 +70,8 @@ namespace MarioGame.Gameplay.Player.Core
         public ObservableProperty<float> ClimbSpeed => _climbSpeed;
         
         public bool IsGroundedValue => _isGrounded.Value;
-        public bool IsRisingValue => _isRising.Value;
-        public bool IsFallingValue => _isFalling.Value;
+        public bool IsRisingValue => !IsClimbingValue && _isRising.Value;
+        public bool IsFallingValue => !IsClimbingValue && _isFalling.Value;
         public bool IsMovingValue => _isMoving.Value;
         public bool IsClimbingValue => _isClimbing.Value;
         
@@ -86,11 +87,11 @@ namespace MarioGame.Gameplay.Player.Core
         protected override void CacheComponents()
         {
             base.CacheComponents();
-            _movement = GetComponent<PlayerMovement>();
-            _jump = GetComponent<PlayerJump>();
-            _groundChecker = GetComponent<GroundChecker>();
-            _ladderChecker = GetComponent<LadderChecker>();
-            _climb = GetComponent<PlayerClimb>();
+            _movement ??= GetComponent<PlayerMovement>();
+            _jump ??= GetComponent<PlayerJump>();
+            _groundChecker ??= GetComponentInChildren<GroundChecker>();
+            _ladderChecker ??= GetComponentInChildren<LadderChecker>();
+            _climb ??= GetComponent<PlayerClimb>();
             
             AssertIsNotNull(_movement, "PlayerMovement component required");
             AssertIsNotNull(_jump, "PlayerJump component required");
@@ -128,6 +129,11 @@ namespace MarioGame.Gameplay.Player.Core
             _verticalVelocity.Value = _jump.VerticalVelocity;
             _currentSpeed.Value = _movement.CurrentSpeed;
             _climbSpeed.Value = _climb.ClimbVelocity;
+        }
+
+        public override bool CanFire()
+        {
+            return CurrentStateValue.CanFire();
         }
     }
 }

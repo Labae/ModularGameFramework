@@ -1,5 +1,6 @@
 using MarioGame.Gameplay.Config.Movement;
 using MarioGame.Gameplay.Interfaces;
+using MarioGame.Gameplay.Player.Components;
 
 namespace MarioGame.Gameplay.Player.States
 {
@@ -10,6 +11,7 @@ namespace MarioGame.Gameplay.Player.States
         public IMovementIntentReceiver IntentReceiver { get; }
         public IPlayerJumpActions JumpActions { get; }
         public IPlayerClimbActions ClimbActions { get; }
+        public PlayerWeapon Weapon { get; }
 
         public PlayerStateContext
         (
@@ -17,13 +19,16 @@ namespace MarioGame.Gameplay.Player.States
             IInputProvider inputProvider,
             IMovementIntentReceiver intentReceiver,
             IPlayerJumpActions jumpActions,
-            IPlayerClimbActions climbActions)
+            IPlayerClimbActions climbActions,
+            PlayerWeapon weapon
+            )
         {
             MovementConfig = movementConfig;
             InputProvider = inputProvider;
             IntentReceiver = intentReceiver;
             JumpActions = jumpActions;
             ClimbActions = climbActions;
+            Weapon = weapon;
         }
     }
 }

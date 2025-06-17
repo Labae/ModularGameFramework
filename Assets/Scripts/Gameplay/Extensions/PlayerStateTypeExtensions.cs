@@ -77,8 +77,10 @@ namespace MarioGame.Gameplay.Extensions
             return state switch
             {
                 PlayerStateType.Idle => true,
+                PlayerStateType.IdleShoot => true,
                 PlayerStateType.Run => true,
                 PlayerStateType.Crouch => true,
+                PlayerStateType.Fall => true,
                 _ => false,
             };
         }

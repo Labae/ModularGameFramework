@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c76a1116fd2a481890a5581d72937bf6, type: 3}
+  m_Name: Player Hitscan Weapon Config
+  m_EditorClassIdentifier: 
+  WeaponName: Hitscan Weapon
+  WeaponIcon: {fileID: 0}
+  ProjectileType: 2
+  ProjectilePrefab: {fileID: 7964359705690882073, guid: ec9e46f69d73a4c98b012e59e63cf5db, type: 3}
+  ProjectileSpeed: 1000
+  ProjectileDamage: 3
+  ProjectileLifetime: 0.1
+  ProjectileAnimation: {fileID: 11400000, guid: 24d94abfe4df84ea888b12156052d24e, type: 2}
+  ProjectileFlyAnimation: {fileID: 0}
+  ProjectileTrailAnimation: {fileID: 0}
+  ProjectileChargeAnimation: {fileID: 0}
+  FireRate: 0.3
+  SafeFireDistance: 0.2
+  BurstCount: 1
+  BurstDelay: 0.1
+  EnemyLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  FriendlyLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  WallLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  DestructibleLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  NeutralLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  HitEffectPrefab: {fileID: 867185225528280083, guid: 8d053fb713a4f42f3aeb9f1da991b2ca, type: 3}
+  PenetrateEffectPrefab: {fileID: 4016756136807707136, guid: 6e3e0d65751f84d06a371c295aee34fb, type: 3}
+  MuzzleFlashPrefab: {fileID: 0}
+  FireSound: {fileID: 0}
+  HitSound: {fileID: 0}
+  EntityHitAnimation: {fileID: 11400000, guid: c76eccf2304ce4fe2b75179ef0c79c5e, type: 2}
+  WallHitAnimation: {fileID: 11400000, guid: c76eccf2304ce4fe2b75179ef0c79c5e, type: 2}
+  DestructibleHitAnimation: {fileID: 0}
+  PenetrateAnimation: {fileID: 11400000, guid: a5dc203775b634a41968d660011c5cf3, type: 2}
+  UseGravity: 0
+  GravityScale: 1
+  RotateWithVelocity: 0
+  AllowFriendlyFire: 0
+  DamageNeutralTargets: 1
+  MaxRange: 100
+  IgnoreWalls: 0
+  CanPenetrate: 0
+  MaxPenetrationTargets: 1
+  HasDamageFalloff: 0
+  DamageFalloffStartDistance: 30
+  MinDamageMultiplier: 0.5

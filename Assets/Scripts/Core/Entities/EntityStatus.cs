@@ -1,19 +1,13 @@
 using System;
 using MarioGame.Core.Enums;
+using MarioGame.Core.Interfaces;
 using MarioGame.Core.Reactive;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace MarioGame.Core.Entities
 {
-    [DisallowMultipleComponent]
-    public abstract class EntityStatus<T> : CoreBehaviour where T : Enum
+    public abstract class EntityStatus : CoreBehaviour, IFireCondition
     {
-        [Header("State Information")] [SerializeField]
-        protected ObservableProperty<T> _currentState;
-        public ObservableProperty<T> CurrentState => _currentState;
-        public T CurrentStateValue => _currentState.Value;
-        
         [SerializeField]
         protected ObservableProperty<HorizontalDirectionType> _faceDirection;
         
@@ -25,29 +19,36 @@ namespace MarioGame.Core.Entities
             SetupEventListeners();
         }
         
-        private void Update()
-        {
-            UpdateStates();
-        }
-
-        protected void OnDestroy()
-        {
-            
-        }
-
         protected virtual void SetupEventListeners()
         {
 
         }
         
-        public void SetCurrentState(T newState)
+        private void Update()
         {
-            _currentState.Value = newState;
+            UpdateStates();
         }
-
+        
         protected virtual void  UpdateStates()
         {
             
+        }
+        
+        public abstract bool CanFire();
+    }
+    
+    [DisallowMultipleComponent]
+    public abstract class EntityStatus<T> : EntityStatus  where T : Enum
+    {
+        [Header("State Information")] [SerializeField]
+        protected ObservableProperty<T> _currentState;
+        public ObservableProperty<T> CurrentState => _currentState;
+        public T CurrentStateValue => _currentState.Value;
+        
+        
+        public void SetCurrentState(T newState)
+        {
+            _currentState.Value = newState;
         }
     }
 }

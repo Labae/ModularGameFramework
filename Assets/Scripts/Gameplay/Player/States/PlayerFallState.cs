@@ -61,12 +61,6 @@ namespace MarioGame.Gameplay.Player.States
 
         private void CheckTransitions()
         {
-            if (CheckClimbTransition())
-            {
-                ChangeState(PlayerStateType.Climb);
-                return;
-            }
-            
             if (_status.IsRisingValue)
             {
                 ChangeState(PlayerStateType.Jump);
@@ -82,7 +76,15 @@ namespace MarioGame.Gameplay.Player.States
                 else
                 {
                     ChangeState(PlayerStateType.Idle);
-                }   
+                }
+
+                return;
+            }
+            
+            if (CheckClimbTransition())
+            {
+                ChangeState(PlayerStateType.Climb);
+                return;
             }
         }
         

@@ -2,6 +2,7 @@ using System;
 using MarioGame.Core;
 using MarioGame.Core.Extensions;
 using MarioGame.Level.Interfaces;
+using MarioGame.Level.LevelObjects.Ladders;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Components
@@ -10,7 +11,6 @@ namespace MarioGame.Gameplay.Components
     /// 땅 감지를 담당하는 컴포넌트
     /// 여러 개의 Raycast를 사용하여 정확한 땅 감지 제공
     /// </summary>
-    [RequireComponent(typeof(Collider2D))]
     public class GroundChecker : CoreBehaviour
     {
         [SerializeField, Min(0.0f)] private float _groundCheckDistance = 0.1f;
@@ -24,7 +24,7 @@ namespace MarioGame.Gameplay.Components
 
         [Header("Bypass System")] [SerializeField]
         private bool _enableBypasss = true;
-        private IBypassable _currentBypassable;
+        private LadderTopPlatformBypass _currentBypassable;
 
         [Header("Debug")] [SerializeField] private bool _drawGizmos = true;
         private RaycastHit2D[] _groundCheckHits;
@@ -32,6 +32,7 @@ namespace MarioGame.Gameplay.Components
         private bool _isGrounded;
         private bool _wasGroundedLastFrame;
         
+        [SerializeField]
         private Collider2D _collider2D;
 
         public event Action OnGroundEnter;
@@ -45,7 +46,7 @@ namespace MarioGame.Gameplay.Components
         protected override void CacheComponents()
         {
             base.CacheComponents();
-            _collider2D = GetComponent<Collider2D>();
+            _collider2D ??= GetComponentInChildren<Collider2D>();
             AssertIsNotNull(_collider2D, "Collider2D component required");
 
             _groundCheckHits = new RaycastHit2D[_groundCheckRayCount+1];
@@ -102,7 +103,7 @@ namespace MarioGame.Gameplay.Components
            
             for (var i = 0; i < hitSize; i++)
             {
-                var bypass = _groundCheckHits[i].collider.GetComponent<IBypassable>();
+                var bypass = _groundCheckHits[i].collider.GetComponent<LadderTopPlatformBypass>();
                 if (bypass == null)
                 {
                     continue;

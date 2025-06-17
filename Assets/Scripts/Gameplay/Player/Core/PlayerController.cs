@@ -103,7 +103,8 @@ namespace MarioGame.Gameplay.Player.Core
                 _inputProvider,
                 _movement,
                 _playerJump,
-                _playerClimb);
+                _playerClimb,
+                _playerWeapon);
 
             _stateMachine.AddStates(
                 new PlayerIdleState(_stateMachine, this, _status, context),
@@ -111,7 +112,8 @@ namespace MarioGame.Gameplay.Player.Core
                 new PlayerJumpState(_stateMachine, this, _status, context),
                 new PlayerFallState(_stateMachine, this, _status, context),
                 new PlayerCrouchState(_stateMachine, this, _status, context),
-                new PlayerClimbState(_stateMachine, this, _status, context)
+                new PlayerClimbState(_stateMachine, this, _status, context),
+                new PlayerIdleShoot(_stateMachine, this, _status, context)
             );
 
             _stateMachine.OnStateChanged += OnPlayerStateChanged;
