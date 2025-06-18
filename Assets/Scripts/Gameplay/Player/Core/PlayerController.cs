@@ -1,5 +1,6 @@
 using MarioGame.Core.Entities;
 using MarioGame.Core.StateMachine;
+using MarioGame.Gameplay.Camera.Events;
 using MarioGame.Gameplay.Combat.Data;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Config.Data;
@@ -79,6 +80,8 @@ namespace MarioGame.Gameplay.Player.Core
             _stateMachine.Start(PlayerStateType.Idle);
             
             _health.OnDamageTaken += OnDamageTaken;
+            
+            CameraEventGenerator.SetTarget(this);
         }
 
         protected override void HandleDestruction()
@@ -95,6 +98,11 @@ namespace MarioGame.Gameplay.Player.Core
             if (obj.DamageInfo.Damage > 0 && obj.RemainingHealth > 0)
             {
                 _stateMachine.ForceChangeState(PlayerStateType.Hurt);
+            }
+
+            if (obj.DamageInfo.WasCritical)
+            {
+                CameraEventGenerator.Shake(ShakeData.Punch( obj.DamageInfo.DamageDirection,0.4f, 0.25f));
             }
         }
 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntityName: 
   Description: 
-  MaxHealth: 100
+  MaxHealth: 100000
   HasHealth: 1
   InvincibilityDuration: 0.1
   CanTakeDamage: 1

@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace MarioGame.Core.ObjectPooling
 {
-    public class ObjectPool<T> : IObjectPool<T> where T : Component, IPoolable
+    public class ObjectPool<T> : IObjectPool<T> where T : PoolableObject
     {
         private readonly Queue<T> _pool = new();
         private readonly HashSet<T> _activeObjects = new();
@@ -23,7 +23,9 @@ namespace MarioGame.Core.ObjectPooling
         public int TotalCount => PooledCount + ActiveCount;
         public bool IsFull => TotalCount >= _maxSize;
 
-        public ObjectPool(T prefab, int initialSize = 10, int maxSize = 100, bool autoExpand = true, Transform parent = null)
+        public ObjectPool(T prefab, int initialSize = 10, 
+            int maxSize = 100, bool autoExpand = true, 
+            Transform parent = null)
         {
             _prefab = prefab;
             if (_prefab == null)

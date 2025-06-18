@@ -25,11 +25,6 @@ namespace MarioGame.Gameplay.Weapons
 
         public void Initialize()
         {
-            if (_config?.ProjectilePrefab != null)
-            {
-                var concreteProjectile = _config.ProjectilePrefab.GetComponent<Projectile>();
-                ObjectPoolManager.Instance.CreatePool(concreteProjectile);
-            }
         }
 
         public bool CanFire(IFireCondition fireCondition)
@@ -54,7 +49,7 @@ namespace MarioGame.Gameplay.Weapons
 
         public void Fire(WeaponFireData fireData)
         {
-            if (ObjectPoolManager.Instance.TryGetPool(_config.ProjectilePrefab, out var pool))
+            if (ObjectPoolManager.Instance.TryGetPool<Projectile>(out var pool))
             {
                 var bullet = pool.Get();
                 bullet?.Fire(fireData.Position, fireData.Direction, _config);

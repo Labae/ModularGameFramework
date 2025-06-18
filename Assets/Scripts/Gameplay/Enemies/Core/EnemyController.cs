@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using MarioGame.Core.Data;
 using MarioGame.Core.Entities;
 using MarioGame.Core.StateMachine;
+using MarioGame.Gameplay.Camera.Events;
 using MarioGame.Gameplay.Components;
 using MarioGame.Gameplay.Config.Data;
 using MarioGame.Gameplay.Config.Movement;
+using MarioGame.Gameplay.Effects;
 using MarioGame.Gameplay.Enemies.Components;
 using MarioGame.Gameplay.Enemies.States;
 using MarioGame.Gameplay.Enums;
@@ -29,6 +29,7 @@ namespace MarioGame.Gameplay.Enemies.Core
         private EnemyStatus _status;
         private EntityHealth _health;
         private EnemyMovement _movement;
+        private EntityPhysicsReaction _physicsReaction;
 
         private AIInputProvider _inputProvider;
         
@@ -60,15 +61,18 @@ namespace MarioGame.Gameplay.Enemies.Core
             base.Initialize();
             _movement.Initialize(_config);
             _health.Initialize(_data);
+
+            _health.OnDeath += HandleDeath;
             _stateMachine.Start(EnemyStateType.Idle);
         }
-        
+
         protected override void HandleDestruction()
         {
             if (_stateMachine != null)
             {
                 _stateMachine.OnStateChanged -= OnEnemyStateChanged;
             }
+            _health.OnDeath -= HandleDeath;
             _inputProvider.Dispose();
             base.HandleDestruction();
         }
@@ -108,7 +112,15 @@ namespace MarioGame.Gameplay.Enemies.Core
             DebugLog("StateMachine setup completed");
         }
 
-       
+        private void HandleDeath()
+        {
+            if (_data.DeathEffectAnimation != null)
+            {
+                EffectFactory.CreateEnemyDeathEffect(_data.DeathEffectAnimation, transform.position, transform.localScale.x);
+            }
+            CameraEventGenerator.Shake(ShakeData.Explosion(0.4f, 0.25f));
+            Destroy(gameObject);
+        }
         
         private void OnEnemyStateChanged(EnemyStateType newState, EnemyStateType oldState)
         {

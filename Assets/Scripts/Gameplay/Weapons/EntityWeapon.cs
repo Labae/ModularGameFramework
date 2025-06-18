@@ -61,7 +61,6 @@ namespace MarioGame.Gameplay.Weapons
             // 컴포넌트들 초기화
             _directionController?.Initialize();
             _fireController?.Initialize();
-            _effectManager?.Initialize();
             
             _isInitialized = true;
         }
@@ -141,7 +140,6 @@ namespace MarioGame.Gameplay.Weapons
 
                 _fireController?.Initialize();
                 _directionController?.Initialize();
-                _effectManager?.Initialize();
             }
         }
 

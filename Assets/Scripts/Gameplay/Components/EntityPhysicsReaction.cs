@@ -166,7 +166,6 @@ namespace MarioGame.Gameplay.Components
             }
         }
 
-
         private void CleanupReaction(PhysicsReactionType reactionType)
         {
             switch (reactionType)

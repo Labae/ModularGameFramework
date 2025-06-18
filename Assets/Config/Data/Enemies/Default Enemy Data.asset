@@ -18,3 +18,7 @@ MonoBehaviour:
   HasHealth: 1
   InvincibilityDuration: 0.1
   CanTakeDamage: 1
+  DeathEffectAnimation: {fileID: 11400000, guid: 5a3c3d3425d744267b5c2872dc35db36, type: 2}
+  HitSound: {fileID: 0}
+  CriticalHitSound: {fileID: 8300000, guid: 629869220c9a04a3e9a27987460ee428, type: 3}
+  DeathSound: {fileID: 8300000, guid: b2bf7dd538ada407ab5c95ebe2841a32, type: 3}

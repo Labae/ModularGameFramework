@@ -17,12 +17,13 @@ MonoBehaviour:
   ProjectileType: 0
   ProjectilePrefab: {fileID: 7964359705690882073, guid: ec9e46f69d73a4c98b012e59e63cf5db, type: 3}
   ProjectileSpeed: 15
-  ProjectileDamage: 1
+  ProjectileDamage: 30
   ProjectileLifetime: 3
   ProjectileAnimation: {fileID: 11400000, guid: 9c6e9806f8adb4da2b10556c526653aa, type: 2}
   ProjectileFlyAnimation: {fileID: 0}
   ProjectileTrailAnimation: {fileID: 0}
   ProjectileChargeAnimation: {fileID: 0}
+  FireSound: {fileID: 8300000, guid: 4310474905e266640852f43bd609a1a4, type: 3}
   FireRate: 0.3
   SafeFireDistance: 0.1
   EnemyLayers:
@@ -40,11 +41,7 @@ MonoBehaviour:
   NeutralLayers:
     serializedVersion: 2
     m_Bits: 0
-  HitEffectPrefab: {fileID: 867185225528280083, guid: 8d053fb713a4f42f3aeb9f1da991b2ca, type: 3}
-  PenetrateEffectPrefab: {fileID: 4016756136807707136, guid: 6e3e0d65751f84d06a371c295aee34fb, type: 3}
   MuzzleFlashPrefab: {fileID: 0}
-  FireSound: {fileID: 0}
-  HitSound: {fileID: 0}
   EntityHitAnimation: {fileID: 11400000, guid: 1eaec2a2976c34904b9c0679b0bcbdff, type: 2}
   WallHitAnimation: {fileID: 11400000, guid: 1eaec2a2976c34904b9c0679b0bcbdff, type: 2}
   DestructibleHitAnimation: {fileID: 0}

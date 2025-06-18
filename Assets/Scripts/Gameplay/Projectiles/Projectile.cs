@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using MarioGame.Core.Animations;
 using MarioGame.Core.Interfaces;
 using MarioGame.Core.ObjectPooling;
+using MarioGame.Gameplay.Animations;
 using MarioGame.Gameplay.Config.Weapon;
+using MarioGame.Gameplay.Effects;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Interfaces.Combat;
 using MarioGame.Gameplay.Interfaces.Projectiles;
@@ -127,9 +128,6 @@ namespace MarioGame.Gameplay.Projectiles
             
             // Collision 설정 (WeaponConfig 기반)
             SetupCollisionSystem(weaponConfig);
-            
-            // Audio 재생 (WeaponConfig 기반)
-            PlayFireSound(weaponConfig, startPosition);
             
             // 커스터마이징 (WeaponConfig의 ProjectileType 기반)
             OnFireCustomization(weaponConfig);
@@ -706,18 +704,9 @@ namespace MarioGame.Gameplay.Projectiles
         /// </summary>
         private void CreateHitEffect(ProjectileHitData hitData, HitTargetType hitType)
         {
-            if (_currentWeaponConfig.HitEffectPrefab != null)
-            {
-                var effect = GetPooledEffect(_currentWeaponConfig.HitEffectPrefab);
-                if (effect != null)
-                {
-                    // WeaponConfig와 함께 이펙트 초기화
-                    effect.Initialize(_currentWeaponConfig, hitData.HitCollider, hitType);
-                    effect.SetPosition(hitData.HitPoint);
-                    effect.SetNormal(hitData.HitNormal);
-                }
-            }
-
+            EffectFactory.CreateProjectileHitEffect(hitData.HitPoint, _currentWeaponConfig, hitData.HitCollider,
+                hitType, hitData.HitNormal);
+            
             // 히트 사운드는 이펙트에서 WeaponConfig 기반으로 재생됨
             // 별도 사운드 재생 불필요
         }
@@ -727,59 +716,11 @@ namespace MarioGame.Gameplay.Projectiles
         /// </summary>
         private void CreatePenetrateEffect(ProjectileHitData hitData)
         {
-            if (_currentWeaponConfig.PenetrateEffectPrefab != null)
-            {
-                var effect = GetPooledEffect(_currentWeaponConfig.PenetrateEffectPrefab);
-                if (effect != null)
-                {
-                    // 실제 타겟 타입으로 관통 이펙트 초기화
-                    var hitType = _currentWeaponConfig.DetermineHitType(hitData.HitCollider);
-                    effect.Initialize(_currentWeaponConfig, hitData.HitCollider, hitType);
-                    effect.SetPosition(hitData.HitPoint);
-                    effect.SetNormal(hitData.HitNormal);
-                    
-                    Log($"Created penetrate effect for {hitType} target: {hitData.HitCollider.name}");
-                }
-            }
+            EffectFactory.CreatePenetrateEffect(hitData.HitPoint, _currentWeaponConfig, hitData.HitCollider,
+                hitData.HitNormal);
             
             // 관통 이벤트 발생 (IProjectileEvents와 일치)
             OnPenetrated?.Invoke(hitData);
-        }
-
-        /// <summary>
-        /// 풀에서 이펙트 가져오기
-        /// </summary>
-        private T GetPooledEffect<T>(T prefab) where T : Component, IPoolable
-        {
-            if (!ObjectPoolManager.Instance.TryGetPool<T>(out var pool))
-            {
-                LogWarning($"Pool for {typeof(T).Name} not found");
-                return null;
-            }
-
-            var effect = pool.Get();
-            if (effect == null)
-            {
-                LogError($"Failed to get {typeof(T).Name} from pool");
-            }
-
-            return effect;
-        }
-
-        #endregion
-
-        #region Audio
-
-        /// <summary>
-        /// 발사 사운드 재생 (WeaponConfig 기반)
-        /// </summary>
-        private void PlayFireSound(WeaponConfiguration weaponConfig, Vector2 position)
-        {
-            if (weaponConfig.FireSound != null)
-            {
-                // AudioManager.Instance?.PlaySFX(weaponConfig.FireSound, position);
-                Log($"Playing fire sound: {weaponConfig.FireSound.name}");
-            }
         }
 
         #endregion

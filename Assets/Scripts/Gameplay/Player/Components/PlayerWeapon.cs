@@ -1,3 +1,4 @@
+using MarioGame.Audio;
 using MarioGame.Core.Enums;
 using MarioGame.Gameplay.Config.Weapon;
 using MarioGame.Gameplay.Interfaces;
@@ -38,6 +39,7 @@ namespace MarioGame.Gameplay.Player.Components
         protected override void OnFireExecuted(WeaponFireData fireData)
         {
             _lastFireTime = Time.time;
+            AudioManager.Instance.PlaySFX(_weaponConfig.FireSound);
             base.OnFireExecuted(fireData);
         }
 

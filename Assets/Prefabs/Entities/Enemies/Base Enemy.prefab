@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: -4375988739210016320}
   - component: {fileID: 7952166202238742011}
   - component: {fileID: -2631489478159359005}
+  - component: {fileID: 5793865838811912204}
   m_Layer: 9
   m_Name: Base Enemy
   m_TagString: Enemy
@@ -280,6 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5cb9214d6264b56b42020d032708fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lockType: 0
   <CurrentIntent>k__BackingField:
     HorizontalInput: 0
     SpeedMultiplier: 0
@@ -373,6 +375,102 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+--- !u!82 &5793865838811912204
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6858695603126609805}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7730230877517208687
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +630,7 @@ MonoBehaviour:
   _flipOnDirectionChanged: 1
   _defaultAnimationSpeed: 1
   _animationPrefix: Orc_
+  _currentState: 0
   _status: {fileID: 403669290863167485}
 --- !u!114 &3107673389271053544
 MonoBehaviour:
@@ -548,6 +647,6 @@ MonoBehaviour:
   _flashColor: {r: 0.5754717, g: 0.28502136, b: 0.28502136, a: 1}
   _flashDuration: 0.1
   _flashCount: 3
-  _enableShake: 1
-  _shakeIntensity: 0.1
-  _shakeDuration: 0.2
+  _criticalFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  _criticalFlashDuration: 0.15
+  _criticalFlashCount: 5

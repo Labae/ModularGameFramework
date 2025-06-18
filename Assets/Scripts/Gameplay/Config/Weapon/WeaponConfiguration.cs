@@ -1,7 +1,7 @@
-using MarioGame.Core.Animations;
+using MarioGame.Gameplay.Animations;
+using MarioGame.Gameplay.Effects.HitEffects;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.Projectiles;
-using MarioGame.Gameplay.Projectiles.HitEffects;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Config.Weapon
@@ -20,7 +20,7 @@ namespace MarioGame.Gameplay.Config.Weapon
         [Tooltip("투사체 동작 방식 - 충돌 검사 방식이 자동으로 결정됨")]
         public ProjectileType ProjectileType = ProjectileType.Normal;
         
-        public Projectile ProjectilePrefab; // TODO: Projectile로 변경 예정
+        public Projectile ProjectilePrefab; 
         public float ProjectileSpeed = 15f;
         public int ProjectileDamage = 1;
         public float ProjectileLifetime = 3f;
@@ -39,6 +39,7 @@ namespace MarioGame.Gameplay.Config.Weapon
         public SpriteAnimation ProjectileChargeAnimation;
 
         [Header("Fire Settings")]
+        public AudioClip FireSound;
         public float FireRate = 0.3f;
         public float SafeFireDistance = 0.2f;
 
@@ -59,11 +60,7 @@ namespace MarioGame.Gameplay.Config.Weapon
         public LayerMask NeutralLayers = 0;
 
         [Header("Effects & Audio")]
-        public ProjectileEffect HitEffectPrefab;
-        public ProjectileEffect PenetrateEffectPrefab;
         public GameObject MuzzleFlashPrefab;
-        public AudioClip FireSound;
-        public AudioClip HitSound;
 
         [Header("Hit Animations")]
         [Tooltip("Entity 히트 시 재생할 애니메이션")]

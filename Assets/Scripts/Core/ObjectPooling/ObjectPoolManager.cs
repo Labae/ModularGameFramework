@@ -28,10 +28,17 @@ namespace MarioGame.Core.ObjectPooling
 
         [Header("Pool Settings")] [SerializeField]
         private int _defaultInitialSize = 10;
-
         [SerializeField] private int _defaultMaxSize = 100;
         [SerializeField] private bool _defaultAutoExpand = true;
 
+        [Header("Pre-configured Pools")]
+        [SerializeField] private List<PoolSetup> _poolSetups = new();
+
+        [Header("Auto-Initialize")] [SerializeField]
+        private bool _initializeOnAwake = true;
+        [SerializeField] private bool _validatePoolsOnStart = true;
+        
+        
         protected override void Awake()
         {
             base.Awake();
@@ -39,15 +46,96 @@ namespace MarioGame.Core.ObjectPooling
             {
                 _instance = this;
                 DontDestroyOnLoad(gameObject);
+
+                if (_initializeOnAwake)
+                {
+                    InitializePreConfiguredPools();
+                }
             }
             else if (_instance != this)
             {
                 Destroy(gameObject);
             }
         }
+        
+        private void Start()
+        {
+            if (_validatePoolsOnStart)
+            {
+                ValidateAllPools();
+            }
+        }
+
+        private void InitializePreConfiguredPools()
+        {
+            foreach (var setup in _poolSetups)
+            {
+                if (!setup.IsValid())
+                {
+                    continue;
+                }
+
+                var prefabType = setup.Prefab.GetType();
+
+                if (_pools.ContainsKey(prefabType))
+                {
+                    continue;
+                }
+                
+                CreatePoolForIPoolable(setup);
+            }
+        }
+
+        private bool CreatePoolForIPoolable(PoolSetup poolSetup)
+        {
+            if (poolSetup.Prefab is null)
+            {
+                return false;
+            }
+            
+            var type = poolSetup.Prefab.GetType();
+            var poolType = typeof(ObjectPool<>).MakeGenericType(type);
+            var pool = Activator.CreateInstance(poolType,
+                poolSetup.Prefab,
+                poolSetup.InitialPoolSize,
+                poolSetup.MaxPoolSize,
+                poolSetup.AutoExpand,
+                transform) as IObjectPool;
+            
+            if (pool == null)
+            {
+                return false;
+            }
+            
+            _pools[type] = pool;
+            return true;
+        }
+        
+        private void ValidateAllPools()
+        {
+            foreach (var setup in _poolSetups)
+            {
+                if (!setup.IsValid())
+                {
+                    LogError($"Invalid setup: {setup.Prefab?.name ?? "null"} - Not PoolableObject or null");
+                    continue;
+                }
+                
+                var type = setup.Prefab.GetType();
+                bool poolExists = _pools.ContainsKey(type);
+                if (poolExists)
+                {
+                    Log($"{setup.Prefab.name} ({type.Name}) - Pool exists");
+                }
+                else
+                {
+                    LogWarning($"{setup.Prefab.name} ({type.Name}) - Pool not created");
+                }
+            }
+        }
 
         public IObjectPool<T> CreatePool<T>(T prefab, int initialSize = -1, int maxSize = -1, bool? autoExpand = null)
-            where T : Component, IPoolable
+            where T : PoolableObject
         {
             var type = typeof(T);
             if (_pools.TryGetValue(type, out var cachedPool))
@@ -66,7 +154,7 @@ namespace MarioGame.Core.ObjectPooling
             return pool;
         }
 
-        public T Get<T>() where T : Component, IPoolable
+        public T Get<T>() where T : PoolableObject
         {
             var type = typeof(T);
 
@@ -79,7 +167,7 @@ namespace MarioGame.Core.ObjectPooling
             return null;
         }
 
-        public void Return<T>(T pooledObject) where T : Component, IPoolable
+        public void Return<T>(T pooledObject) where T : PoolableObject
         {
             var type = typeof(T);
 
@@ -91,7 +179,7 @@ namespace MarioGame.Core.ObjectPooling
             LogError($"No pool found for type {type.Name}");
         }
 
-        public bool TryGetPool<T>(out IObjectPool<T> result) where T : Component, IPoolable
+        public bool TryGetPool<T>(out IObjectPool<T> result) where T : PoolableObject
         {
             var type = typeof(T);
             if (_pools.TryGetValue(type, out var cachedPool) && cachedPool is IObjectPool<T> pool)
@@ -106,7 +194,7 @@ namespace MarioGame.Core.ObjectPooling
         }
 
         public bool TryGetPool<T>(T poolable, out IObjectPool<T> result)
-            where T : Component, IPoolable
+            where T : PoolableObject
         {
             var type = typeof(T);
             if (_pools.TryGetValue(type, out var cachedPool) && cachedPool is IObjectPool<T> pool)

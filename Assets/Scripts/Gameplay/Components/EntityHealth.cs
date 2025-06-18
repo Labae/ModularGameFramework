@@ -1,4 +1,5 @@
 using System;
+using MarioGame.Audio;
 using MarioGame.Core;
 using MarioGame.Gameplay.Combat.Data;
 using MarioGame.Gameplay.Config.Data;
@@ -20,7 +21,7 @@ namespace MarioGame.Gameplay.Components
         public event Action<int> OnHealed;
         public event Action<DamageEventData> OnDamageTaken;
         public event Action OnDeath;
-
+        
         public int CurrentHealth => _currentHealth;
         public bool IsInvincible => Time.time - _lastDamageTime < _data.InvincibilityDuration;
 
@@ -62,10 +63,27 @@ namespace MarioGame.Gameplay.Components
                 RemainingHealth = _currentHealth,
             };
 
-            OnDamageTaken?.Invoke(eventData);
-
-            if (!IsAlive)
+            if (IsAlive)
             {
+                if (damageInfo.WasCritical)
+                {
+                    if (_data.CriticalHitSound != null)
+                    {
+                        AudioManager.Instance.PlaySFX3D(_data.CriticalHitSound, damageInfo.HitPoint);
+                    }
+                }
+                else
+                {
+                    if (_data.HitSound != null)
+                    {
+                        AudioManager.Instance.PlaySFX3D(_data.HitSound, damageInfo.HitPoint);
+                    }
+                }
+                OnDamageTaken?.Invoke(eventData);
+            }
+            else
+            {
+                AudioManager.Instance.PlaySFX3D(_data.DeathSound, damageInfo.HitPoint);
                 OnDeath?.Invoke();
                 Log($"Entity has died");
             }

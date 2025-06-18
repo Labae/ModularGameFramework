@@ -1,3 +1,4 @@
+using MarioGame.Gameplay.Animations;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Config.Data
@@ -17,5 +18,12 @@ namespace MarioGame.Gameplay.Config.Data
         [Min(0f)]
         public float InvincibilityDuration = 0.2f;
         public bool CanTakeDamage = true;
+        
+        public SpriteAnimation DeathEffectAnimation;
+
+        [Header("Audio")] 
+        public AudioClip HitSound;
+        public AudioClip CriticalHitSound;
+        public AudioClip DeathSound;
     }
 }

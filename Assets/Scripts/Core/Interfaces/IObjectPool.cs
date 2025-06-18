@@ -1,4 +1,5 @@
 using System;
+using MarioGame.Core.ObjectPooling;
 using UnityEngine;
 
 namespace MarioGame.Core.Interfaces
@@ -20,7 +21,7 @@ namespace MarioGame.Core.Interfaces
         void Resize(int newSize);
     }
 
-    public interface IObjectPool<T> : IObjectPool where T : Component, IPoolable
+    public interface IObjectPool<T> : IObjectPool where T : PoolableObject
     {
         T Get();
         void Return(T poolable);

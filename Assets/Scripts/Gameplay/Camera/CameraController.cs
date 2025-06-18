@@ -9,7 +9,7 @@ using UnityEngine;
 namespace MarioGame.Gameplay.Camera
 {
     [RequireComponent(typeof(UnityEngine.Camera))]
-    public class CameraController : CoreBehaviour
+    public partial class CameraController : CoreBehaviour
     {
         [Header("Target Following")] [SerializeField]
         private Entity _target;
@@ -51,6 +51,9 @@ namespace MarioGame.Gameplay.Camera
         private Vector3 _smoothPosition;
         private float _pixelSize;
 
+        private Vector3 _shakeOffset;
+        private Vector3 _totalOffset;
+
         public bool IsFollowingTarget => _target != null;
         public float FollowSpeed => _followSpeed;
         public float SmoothTime => _smoothTime;
@@ -65,13 +68,8 @@ namespace MarioGame.Gameplay.Camera
 
         private void Start()
         {
-            if (_target == null)
-            {
-                return;
-            }
-
-            SnapToTarget();
             InitializeFollowStrategy();
+            SnapToTarget();
         }
 
         private void InitializeFollowStrategy()
@@ -114,7 +112,6 @@ namespace MarioGame.Gameplay.Camera
 
             Log("Camera snapped to target");
         }
-
         public void SetTarget(Entity newTarget)
         {
             if (_target == newTarget)
@@ -128,6 +125,7 @@ namespace MarioGame.Gameplay.Camera
                 _lastTargetPosition = _target.position3D;
                 _targetVelocity = Vector3.zero;
                 Log($"Camera target set to: {_target.name}");
+                SnapToTarget();
             }
             else
             {
@@ -135,7 +133,7 @@ namespace MarioGame.Gameplay.Camera
             }
         }
 
-        public void SetFollowMode(FollowMode followMode)
+        private void SetFollowMode(FollowMode followMode)
         {
             if (_followMode == followMode)
             {
@@ -145,6 +143,18 @@ namespace MarioGame.Gameplay.Camera
             _followMode = followMode;
             InitializeFollowStrategy();
             Log($"Follow mode set to: {_followMode}");
+        }
+
+        public void SetShakeOffset(Vector3 shakeOffset)
+        {
+            _shakeOffset = shakeOffset;
+            UpdateTotalOffset();
+        }
+
+        private void UpdateTotalOffset()
+        {
+            // 나중에 zoom 같은거 추가 되면 사용
+            _totalOffset = _shakeOffset;
         }
 
         private Vector3 CalculateDesiredPosition()
@@ -203,7 +213,7 @@ namespace MarioGame.Gameplay.Camera
             _smoothPosition = _followStrategy.CalculatePosition(position3D, desiredPosition, 
                 ref _currentVelocity, Time.fixedDeltaTime, this);
 
-            transform.position = _smoothPosition;
+            transform.position = _smoothPosition + _totalOffset;
         }
 
 #if UNITY_EDITOR
