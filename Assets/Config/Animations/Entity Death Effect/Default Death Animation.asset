@@ -13,15 +13,20 @@ MonoBehaviour:
   m_Name: Default Death Animation
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: f1145755e0faa4c2faa02d45079e841f, type: 3}
-  - {fileID: 21300000, guid: a719656719000433d8e36307df93048b, type: 3}
-  - {fileID: 21300000, guid: 277c2d37f417746d6a4ffc3a3a35b469, type: 3}
-  - {fileID: 21300000, guid: 277c2d37f417746d6a4ffc3a3a35b469, type: 3}
-  - {fileID: 21300000, guid: 9c9a4366add434cea9111e6bd025bcf8, type: 3}
-  - {fileID: 21300000, guid: 9115461e0db3d4e77b8b2b03d92a4d9f, type: 3}
-  - {fileID: 21300000, guid: 720b6b00c45e7428da186d8e2e49875b, type: 3}
-  - {fileID: 21300000, guid: ae3c4374c5d0f4661bf83593a915fad5, type: 3}
-  - {fileID: 21300000, guid: 9dacb0f22c5494e278dae3a6876395ad, type: 3}
+  - {fileID: -995494076, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 1260867908, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -556395421, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -70746452, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 703551729, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 2092456764, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -934294591, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 1150781530, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 12417059, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -150716185, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 217160235, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -1632365669, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: 214121297, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
+  - {fileID: -1897409508, guid: 184f0e5a04d20492da8aeeb47c526186, type: 3}
   frameRate: 12
   loop: 0
   autoStart: 1
