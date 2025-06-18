@@ -29,13 +29,10 @@ namespace MarioGame.Gameplay.Camera
         {
             base.CacheComponents();
             _cameraController = GetComponent<CameraController>();
-            AssertIsNotNull(_cameraController, "Camera required");
-        }
-
-        private void Start()
-        {
             _cameraEventBinding = new EventBinding<CameraEvent>(HandleCameraEvent);
             EventBus<CameraEvent>.Register(_cameraEventBinding);
+            
+            AssertIsNotNull(_cameraController, "Camera required");
         }
 
         private void OnDestroy()

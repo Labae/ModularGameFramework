@@ -334,6 +334,7 @@ Transform:
   m_Children:
   - {fileID: 1595399010178848386}
   - {fileID: 6020489559723155747}
+  - {fileID: 1839621293999140102}
   m_Father: {fileID: 401768598084919978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4777799530105671316
@@ -423,11 +424,16 @@ MonoBehaviour:
     _value: 0
   _currentState:
     _value: 0
+  _health: {fileID: 0}
   _movement: {fileID: 7607978501017808068}
   _jump: {fileID: 2797004823867686373}
   _climb: {fileID: 5105180514091715992}
   _groundChecker: {fileID: 3008433625282149533}
   _ladderChecker: {fileID: 3980581333278879301}
+  _currentHealth:
+    _value: 0
+  _isAlive:
+    _value: 0
   _isGrounded:
     _value: 0
   _isOnLadder:
@@ -463,6 +469,7 @@ MonoBehaviour:
   _entityId: 
   _isActive: 1
   _enableDebugLogs: 1
+  _entityData: {fileID: 11400000, guid: 59ba7aa9f23214c00aac60ece346b5d3, type: 2}
   _movementConfig: {fileID: 11400000, guid: fc83533c563b7439dac41dd92d18d98c, type: 2}
   _playerInputReader: {fileID: 11400000, guid: 729e04a50de6947b1b1e90ebf6037e55, type: 2}
 --- !u!114 &7607978501017808068
@@ -477,6 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb9ed0fca9224b4d995303d06bf2586b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lockType: 0
   <CurrentIntent>k__BackingField:
     HorizontalInput: 0
     SpeedMultiplier: 0
@@ -497,6 +505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _groundChecker: {fileID: 3008433625282149533}
+  _lockType: 0
 --- !u!114 &5105180514091715992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,6 +518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09dd919d50cf4d7688e175f18f0b5a53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _lockType: 0
   _ladderChecker: {fileID: 3980581333278879301}
 --- !u!114 &2309639277607582869
 MonoBehaviour:
@@ -718,6 +728,7 @@ MonoBehaviour:
   _flipOnDirectionChanged: 1
   _defaultAnimationSpeed: 1
   _animationPrefix: Player_
+  _currentState: 0
   _playerStatus: {fileID: 7938807162359307131}
 --- !u!114 &1218866630880563649
 MonoBehaviour:
@@ -819,3 +830,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 997608899925559286}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7859492096433511501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1839621293999140102}
+  - component: {fileID: 7718196864458508408}
+  m_Layer: 0
+  m_Name: Pickup Collector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1839621293999140102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7859492096433511501}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.098, y: 0.405, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7238983214301881199}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7718196864458508408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7859492096433511501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a98e05f2688a49ebaaf6f6d5f765e6cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickupLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  _radius: 0.4

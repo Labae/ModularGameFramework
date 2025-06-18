@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3375701abd8047a1b27141ef5c0b2227, type: 3}
   m_Name: Player Piercing Weapon Config
   m_EditorClassIdentifier: 
-  WeaponName: Piercing Weapon
-  WeaponIcon: {fileID: 0}
+  WeaponName: Assault Rifle
+  WeaponIcon: {fileID: 21300000, guid: 84ef2061fd1d84e88a6792a63446b959, type: 3}
   ProjectileType: 1
   ProjectilePrefab: {fileID: 7964359705690882073, guid: ec9e46f69d73a4c98b012e59e63cf5db, type: 3}
   ProjectileSpeed: 20
@@ -23,6 +23,8 @@ MonoBehaviour:
   ProjectileFlyAnimation: {fileID: 0}
   ProjectileTrailAnimation: {fileID: 0}
   ProjectileChargeAnimation: {fileID: 0}
+  EquipSound: {fileID: 8300000, guid: 2aa1d49451bb84cfe9b039e34cdce471, type: 3}
+  FireSound: {fileID: 8300000, guid: 06ada5590eba8d6489b36c6f3c54ff78, type: 3}
   FireRate: 0.3
   SafeFireDistance: 0.2
   EnemyLayers:
@@ -40,11 +42,7 @@ MonoBehaviour:
   NeutralLayers:
     serializedVersion: 2
     m_Bits: 0
-  HitEffectPrefab: {fileID: 867185225528280083, guid: 8d053fb713a4f42f3aeb9f1da991b2ca, type: 3}
-  PenetrateEffectPrefab: {fileID: 4016756136807707136, guid: 6e3e0d65751f84d06a371c295aee34fb, type: 3}
   MuzzleFlashPrefab: {fileID: 0}
-  FireSound: {fileID: 0}
-  HitSound: {fileID: 0}
   EntityHitAnimation: {fileID: 11400000, guid: 39c733c8b16514a72b8c1af2a1d51d83, type: 2}
   WallHitAnimation: {fileID: 11400000, guid: 39c733c8b16514a72b8c1af2a1d51d83, type: 2}
   DestructibleHitAnimation: {fileID: 0}

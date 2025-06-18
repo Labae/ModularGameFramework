@@ -19,6 +19,7 @@ MonoBehaviour:
   frameRate: 20
   loop: 0
   autoStart: 1
+  AnimationSFX: {fileID: 8300000, guid: 728988fa776d74b50a467e74bad130db, type: 3}
   randomScale: 1
   scaleRange: {x: 0.8, y: 1.2}
   randomRotation: 1

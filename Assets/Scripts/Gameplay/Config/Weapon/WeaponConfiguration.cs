@@ -39,6 +39,7 @@ namespace MarioGame.Gameplay.Config.Weapon
         public SpriteAnimation ProjectileChargeAnimation;
 
         [Header("Fire Settings")]
+        public AudioClip EquipSound;
         public AudioClip FireSound;
         public float FireRate = 0.3f;
         public float SafeFireDistance = 0.2f;

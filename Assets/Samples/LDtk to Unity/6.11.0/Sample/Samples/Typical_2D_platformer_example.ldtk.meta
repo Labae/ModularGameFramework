@@ -37,6 +37,8 @@ ScriptedImporter:
     _asset: {fileID: 5133276772451166664, guid: 94ae2b1c546513e41811bb1a1bd27f81, type: 3}
   - _key: Ladder
     _asset: {fileID: 9156360281714862446, guid: 56a597f7d77da49309a002ea50dbbd22, type: 3}
+  - _key: Weapon
+    _asset: {fileID: 2067012505524015409, guid: 67f042ededfbf44668f25b1a3e872d8e, type: 3}
   _enumGenerate: 1
-  _enumPath: Typical_2D_platformer_example/Typical_2D_platformer_example.cs
-  _enumNamespace: Samples.Typical_2D_platformer_example
+  _enumPath: ../../../../../Scripts/Level/Enums/LevelEnums.cs
+  _enumNamespace: MarioGame.Level.Enums

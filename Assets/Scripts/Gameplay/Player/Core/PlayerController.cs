@@ -1,4 +1,5 @@
 using MarioGame.Core.Entities;
+using MarioGame.Core.Extensions;
 using MarioGame.Core.StateMachine;
 using MarioGame.Gameplay.Camera.Events;
 using MarioGame.Gameplay.Combat.Data;
@@ -133,9 +134,9 @@ namespace MarioGame.Gameplay.Player.Core
         private void TestKnockback(Vector2 direction, string testName)
         {
             var hurtBox = GetComponentInChildren<EntityHurtBox>();
-            var hitPoint = (Vector2)transform.position + direction * -0.5f; // 반대 방향에서 맞음
+            var hitPoint = transform.position.ToVector2()+ direction * -0.5f; // 반대 방향에서 맞음
 
-            hurtBox.TryApplyDamage(15, hitPoint, -direction.normalized);
+            hurtBox.TryApplyDamage(1, hitPoint, -direction.normalized);
             Debug.Log($"{testName} applied!");
         }
 

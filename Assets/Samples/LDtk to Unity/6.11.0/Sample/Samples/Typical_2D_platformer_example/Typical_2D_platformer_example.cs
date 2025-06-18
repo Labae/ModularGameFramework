@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Samples.Typical_2D_platformer_example
+namespace MarioGame.Level
 {
     /// <summary>
     /// LDtk Enum for Typical_2D_platformer_example
@@ -21,5 +21,15 @@ namespace Samples.Typical_2D_platformer_example
         Boots,
         Water,
         Gem
+    }
+
+    /// <summary>
+    /// LDtk Enum for Typical_2D_platformer_example
+    /// </summary>
+    public enum Weapon
+    {
+        Rifle,
+        Shotgun,
+        Missle
     }
 }

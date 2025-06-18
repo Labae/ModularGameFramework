@@ -16,6 +16,7 @@ namespace MarioGame.Level.LDtkImport
 
         public void OnLDtkImportEntity(EntityInstance entityInstance)
         {
+            
         }
         
         private PatrolData GetPatrolPointsFromLDtk()

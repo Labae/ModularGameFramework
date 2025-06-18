@@ -23,7 +23,8 @@ MonoBehaviour:
   frameRate: 20
   loop: 0
   autoStart: 1
-  randomScale: 0
+  AnimationSFX: {fileID: 8300000, guid: b74fd3d37df96466cbb8d94c6d1277dc, type: 3}
+  randomScale: 1
   scaleRange: {x: 0.25, y: 0.35}
   randomRotation: 0
   rotationRange: {x: 0, y: 360}

@@ -1,4 +1,5 @@
 using System;
+using MarioGame.Audio;
 using MarioGame.Core;
 using MarioGame.Core.Entities;
 using MarioGame.Core.Interfaces;
@@ -43,7 +44,7 @@ namespace MarioGame.Gameplay.Weapons
             InitializeWeaponComponents();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             _directionController?.Dispose();
             _effectManager?.Dispose();
@@ -128,7 +129,7 @@ namespace MarioGame.Gameplay.Weapons
             _directionController.SetDirection(direction);
         }
 
-        public virtual void ChangeWeaponConfiguration(WeaponConfiguration configuration)
+        protected void ChangeWeaponConfiguration(WeaponConfiguration configuration)
         {
             _weaponConfig = configuration;
 
@@ -141,12 +142,15 @@ namespace MarioGame.Gameplay.Weapons
                 _fireController?.Initialize();
                 _directionController?.Initialize();
             }
+            
+            AudioManager.Instance.PlaySFX(_weaponConfig.EquipSound);
         }
 
         protected virtual bool CanFire()
         {
             return _entityStatus.CanFire();
         }
+        
         protected abstract bool ShouldFire();
     }
 }
