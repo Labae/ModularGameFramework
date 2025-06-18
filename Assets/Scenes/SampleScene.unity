@@ -153,8 +153,6 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420033}
-  - component: {fileID: 519420035}
   - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
@@ -237,32 +235,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519420033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0428a38bcab74400b5af544498ce7fe3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _target: {fileID: 0}
-  _followOffset: {x: 0, y: 2, z: -10}
-  _followMode: 1
-  _followSpeed: 12
-  _smoothTime: 0.201
-  _maxSpeed: 20
-  _useDeadzone: 1
-  _deadzoneSize: {x: 2, y: 1}
-  _lookAheadDistance: 4
-  _lookAheadSpeed: 2
-  _usePrediction: 1
-  _predictionTime: 0.2
-  _predictionWeight: 0.3
-  _drawGizmos: 1
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,19 +255,6 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
---- !u!114 &519420035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 357a320f39f147309666cfa01660c580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enableShake: 1
 --- !u!19719996 &933108158 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: 8740292937237121668, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
@@ -326,68 +285,6 @@ TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: -5136943218578573930, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
   m_PrefabInstance: {fileID: 1489833659}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1057807347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1057807349}
-  - component: {fileID: 1057807348}
-  m_Layer: 0
-  m_Name: ObjectPoolManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1057807348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057807347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 094f03c4ca6448bd8b77ce682d37c2b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultInitialSize: 10
-  _defaultMaxSize: 100
-  _defaultAutoExpand: 1
-  _poolSetups:
-  - Prefab: {fileID: 867185225528280083, guid: 8d053fb713a4f42f3aeb9f1da991b2ca, type: 3}
-    InitialPoolSize: 10
-    MaxPoolSize: 50
-    AutoExpand: 1
-  - Prefab: {fileID: 7964359705690882073, guid: ec9e46f69d73a4c98b012e59e63cf5db, type: 3}
-    InitialPoolSize: 10
-    MaxPoolSize: 50
-    AutoExpand: 1
-  - Prefab: {fileID: 4204797702103271144, guid: 12cfd5332398343328bd2e2337f1a909, type: 3}
-    InitialPoolSize: 10
-    MaxPoolSize: 50
-    AutoExpand: 1
-  _initializeOnAwake: 1
-  _validatePoolsOnStart: 1
---- !u!4 &1057807349
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057807347}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &1080392839 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: -4700207037605326354, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
@@ -487,148 +384,6 @@ TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: 7523280174149595343, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
   m_PrefabInstance: {fileID: 1489833659}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1470188748
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1470188751}
-  - component: {fileID: 1470188750}
-  - component: {fileID: 1470188749}
-  m_Layer: 0
-  m_Name: PooledAudioSource
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1470188749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470188748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e2414447664b6bb791fbb4a2ff2333, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _audioSource: {fileID: 1470188750}
---- !u!82 &1470188750
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470188748}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!4 &1470188751
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1470188748}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1900951475}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1489833659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3483,56 +3238,6 @@ TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: -5618046272364293936, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
   m_PrefabInstance: {fileID: 1489833659}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1900951473
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1900951475}
-  - component: {fileID: 1900951474}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1900951474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900951473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f00a14eec33842e186cb5ffeef430e6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxPoolSize: 10
-  _pooledAudioPrefab: {fileID: 1470188749}
-  _audioMixer: {fileID: 24100000, guid: 2d46f0c5bf520440fae266dd9c9cb95d, type: 2}
-  _musicMixerGroup: {fileID: 5952269710056916032, guid: 2d46f0c5bf520440fae266dd9c9cb95d, type: 2}
-  _sfxMixerGroup: {fileID: -6379213100407377004, guid: 2d46f0c5bf520440fae266dd9c9cb95d, type: 2}
---- !u!4 &1900951475
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900951473}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1470188751}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &2134797794 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: -48682853631007636, guid: bc598b4ff39da420682842aee3fc5f50, type: 3}
@@ -3543,7 +3248,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
-  - {fileID: 1057807349}
-  - {fileID: 1900951475}
   - {fileID: 1387606957}
   - {fileID: 1489833659}
