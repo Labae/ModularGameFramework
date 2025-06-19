@@ -21,8 +21,7 @@ namespace MarioGame.Gameplay.Effects.DeathEffects
 
         private void SetupEffectScale()
         {
-            var effectScale = Mathf.Clamp(_effectData.EntitySize * 0.8f, 0.5f, 3f);
-            transform.localScale = Vector3.one * effectScale;
+            _animator.SetScaleMultiplier(_effectData.EntitySize * 0.8f);
         }
         
         private void SetupExplosionAnimation()

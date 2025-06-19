@@ -36,6 +36,7 @@ namespace MarioGame.Gameplay.Animations
         private Coroutine _animationCoroutine;
         private int _currentFrame;
         private int _loopCount = 0;
+        private float _scaleMultiplier = 1f;
 
         public event Action OnAnimationStarted;
         public event Action OnAnimationCompleted;
@@ -146,6 +147,11 @@ namespace MarioGame.Gameplay.Animations
         {
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
+        
+        public void SetScaleMultiplier(float scaleMultiplier)
+        {
+            _scaleMultiplier = scaleMultiplier;
+        }
 
         #endregion
 
@@ -154,7 +160,7 @@ namespace MarioGame.Gameplay.Animations
             if (_randomScale)
             {
                 var randomScale = Random.Range(_scaleRange.x, _scaleRange.y);
-                transform.localScale = Vector3.one * randomScale;
+                transform.localScale = Vector3.one * (randomScale * _scaleMultiplier);
             }
 
             if (_randomRotation)
@@ -227,6 +233,7 @@ namespace MarioGame.Gameplay.Animations
             _isPlaying = false;
             _isPaused = false;
             _renderer.enabled = false;
+            _scaleMultiplier = 1f;
         }
 
         private IEnumerator AnimationCoroutine()
@@ -310,6 +317,7 @@ namespace MarioGame.Gameplay.Animations
         private void HandleCompletion()
         {
             _renderer.enabled = false;
+            _scaleMultiplier = 1f;
             OnAnimationCompleted?.Invoke();
         }
 
