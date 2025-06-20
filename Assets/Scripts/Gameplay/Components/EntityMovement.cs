@@ -1,5 +1,6 @@
 using System;
 using Core;
+using Gameplay.Interfaces;
 using Gameplay.MovementIntents;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -62,7 +63,9 @@ namespace Gameplay.Components
         private void SetHorizontalVelocity(float velocity)
         {
             _horizontalVelocity = velocity;
-            _rigidbody2D.velocity = new Vector2(velocity, _rigidbody2D.velocity.y);
+            var currentVelocity = _rigidbody2D.velocity;
+            var velocityDifference = _horizontalVelocity - currentVelocity.x;
+            _rigidbody2D.AddForce(Vector2.right * velocityDifference);
         }
 
         private void ApplyAcceleration(float direction, float speedMultiplier = 1f)

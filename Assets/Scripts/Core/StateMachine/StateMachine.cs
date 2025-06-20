@@ -50,7 +50,7 @@ namespace Core.StateMachine
         {
             Assert.IsNotNull(state, "추가하려고 하는 state가 Null입니다.");
             
-            var stateType = state.StateType;
+            var stateType = state.StateTypeType;
             if (_stateTypeToStateMap.ContainsKey(stateType))
             {
                 Logger.Warning($"이미 추가하려는 State({stateType})가 존재합니다.");
@@ -81,7 +81,7 @@ namespace Core.StateMachine
         {
             // 같은 상태로 변경은 무시
             if (_currentState != null 
-                && _currentState.StateType.Equals(newStateType))
+                && _currentState.StateTypeType.Equals(newStateType))
             {
                 Logger.StateMachine($"이미 {newStateType}상태입니다. 변경 요청을 무시합니다.");
                 return;
@@ -93,7 +93,7 @@ namespace Core.StateMachine
             var previousStateType = default(T);
             if (_currentState != null)
             {
-                previousStateType = _currentState.StateType;
+                previousStateType = _currentState.StateTypeType;
             }
             
             _currentState?.OnExit();

@@ -37,6 +37,6 @@ namespace Core.StateMachine
         /// <summary>
         /// 상태 타
         /// </summary>
-        T StateType { get; }
+        T StateTypeType { get; }
     }
 }

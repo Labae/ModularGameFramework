@@ -6,23 +6,24 @@ namespace Core.StateMachine
 {
     public abstract class BaseState<T> : IState<T> where T : Enum
     {
-        private readonly StateMachine<T> _stateMachine;
-        
-        public abstract T StateType { get; }
+        private readonly Action<T> _changeChangeStateAction;
 
-        protected BaseState(StateMachine<T> stateMachine)
+        public abstract T StateTypeType { get; }
+
+        protected BaseState(Action<T> changeChangeStateAction)
         {
-            _stateMachine = stateMachine;
-            Assert.IsNotNull(_stateMachine, "StateMachine이 null입니다.");
+            _changeChangeStateAction = changeChangeStateAction;
+            Assert.IsNotNull(_changeChangeStateAction, "ChangeState 함수가 null입니다.");
         }
-        
+
         public virtual void OnEnter()
         {
-            Logger.StateMachine($"State({StateType}) 진입");
+            Logger.StateMachine($"State({StateTypeType}) 진입");
         }
 
         public virtual void OnUpdate()
         {
+            CheckTransitions();
         }
 
         public virtual void OnFixedUpdate()
@@ -31,13 +32,18 @@ namespace Core.StateMachine
 
         public virtual void OnExit()
         {
-            Logger.StateMachine($"State({StateType}) 종료");
+            Logger.StateMachine($"State({StateTypeType}) 종료");
         }
 
         protected void ChangeState(T newStateType)
         {
-            Logger.StateMachine($"State변경 요청: {StateType} -> {newStateType}");
-            _stateMachine.ChangeState(newStateType);
+            Logger.StateMachine($"State변경 요청: {StateTypeType} -> {newStateType}");
+            _changeChangeStateAction?.Invoke(newStateType);
+        }
+
+        protected virtual void CheckTransitions()
+        {
+            
         }
     }
 }

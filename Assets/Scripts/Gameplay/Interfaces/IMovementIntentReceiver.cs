@@ -1,4 +1,6 @@
-namespace Gameplay.MovementIntents
+using Gameplay.MovementIntents;
+
+namespace Gameplay.Interfaces
 {
     public interface IMovementIntentReceiver
     {
