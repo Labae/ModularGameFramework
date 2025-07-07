@@ -1,11 +1,16 @@
 using System;
 using MarioGame.Audio;
+using MarioGame.Audio.Interfaces;
 using MarioGame.Core;
 using MarioGame.Core.Entities;
 using MarioGame.Core.Interfaces;
+using MarioGame.Core.ObjectPooling.Interface;
+using MarioGame.Debugging.Interfaces;
 using MarioGame.Gameplay.Config.Weapon;
 using MarioGame.Gameplay.Interfaces;
 using MarioGame.Gameplay.Interfaces.Weapon;
+using MarioGame.Gameplay.Weapons.Interface;
+using Reflex.Attributes;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Weapons
@@ -16,75 +21,65 @@ namespace MarioGame.Gameplay.Weapons
     {
         [Header("Weapon Configuration")] [SerializeField]
         protected WeaponConfiguration _weaponConfig;
-        
-        [Header("Fire Settings")]
-        [SerializeField] private Transform _pivot;
+
+        [Header("Fire Settings")] [SerializeField]
+        private Transform _pivot;
+
         [SerializeField] private Transform _firePosition;
 
-        protected IWeaponDirectionController _directionController;
-        protected IWeaponFireController _fireController;
-        protected IWeaponEffectManager _effectManager;
+        // DI 서비스들
+        [Inject] protected IAudioManager _audioManager;
+        [Inject] protected IObjectPoolManager _poolManager;
 
+        // 순수 C# 서비스
+        protected IWeaponService _weaponService;
         protected TStatus _entityStatus;
 
         protected bool _isInitialized = false;
-        
+
         public event Action OnFired;
 
         protected override void CacheComponents()
         {
             base.CacheComponents();
             _entityStatus = GetComponent<TStatus>();
-            AssertIsNotNull(_entityStatus, $"{typeof(TStatus)} Required");
-            AssertIsNotNull(_weaponConfig, "WeaponConfiguration Required");
+            _assertManager.AssertIsNotNull(_entityStatus, $"{typeof(TStatus)} Required");
+            _assertManager.AssertIsNotNull(_weaponConfig, "WeaponConfiguration Required");
+            _assertManager.AssertIsNotNull(_pivot, "Pivot Transform Required");
+            _assertManager.AssertIsNotNull(_firePosition, "Fire Position Transform Required");
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            CreateWeaponService();
         }
 
         public virtual void Initialize(IInputProvider inputProvider)
         {
-            InitializeWeaponComponents();
+            if (_weaponConfig != null)
+            {
+                _weaponService.Initialize(_weaponConfig, _firePosition, _pivot);
+                _weaponService.OnWeaponFired += HandleWeaponFired;
+                _weaponService.OnWeaponChanged += HandleWeaponChanged;
+            }
+
+            _isInitialized = true;
+            _debugLogger?.Entity("EntityWeapon initialized");
         }
 
         protected virtual void OnDestroy()
         {
-            _directionController?.Dispose();
-            _effectManager?.Dispose();
+            if (_weaponService != null)
+            {
+                _weaponService.OnWeaponFired -= HandleWeaponFired;
+                _weaponService.OnWeaponChanged -= HandleWeaponChanged;
+            }
         }
 
-        /// <summary>
-        /// 공통 무기 컴포넌트 초기화
-        /// </summary>
-        protected virtual void InitializeWeaponComponents()
+        protected virtual void CreateWeaponService()
         {
-            _directionController = CreateDirectionController();
-            _fireController = CreateFireController();
-            _effectManager = CreateEffectManager();
-            
-            // 컴포넌트들 초기화
-            _directionController?.Initialize();
-            _fireController?.Initialize();
-            
-            _isInitialized = true;
-        }
-
-        protected virtual IWeaponEffectManager CreateEffectManager()
-        {
-            return new WeaponEffectManager(_weaponConfig);
-        }
-
-        /// <summary>
-        /// 방향 컨트롤러 생성 (하위 클래스에서 오버라이드 가능)
-        /// </summary>
-        protected virtual IWeaponDirectionController CreateDirectionController()
-        {
-            return new WeaponDirectionController(_pivot);
-        }
-
-        /// <summary>
-        /// 발사 컨트롤러 생성 (하위 클래스에서 오버라이드 가능)
-        /// </summary>
-        protected virtual IWeaponFireController CreateFireController()
-        {
-            return new WeaponFireController(_weaponConfig, _firePosition);
+            _weaponService = new WeaponService(_debugLogger, _audioManager, _poolManager);
         }
 
         protected virtual void Update()
@@ -93,64 +88,32 @@ namespace MarioGame.Gameplay.Weapons
             {
                 return;
             }
-            
+
+            _weaponService?.Update();
             UpdateWeaponDirection();
-            
-            if (ShouldFire() && CanFire())
+
+            if (ShouldFire())
             {
-                Fire();
+                _weaponService?.TryFire(position2D, _entityStatus);
             }
         }
-        
+
         protected abstract void UpdateWeaponDirection();
+        protected abstract bool ShouldFire();
 
-        protected virtual void Fire()
+        public virtual void ChangeWeaponConfiguration(WeaponConfiguration configuration)
         {
-            if (_fireController == null || _directionController == null)
-            {
-                return;
-            }
-
-            var fireData = _fireController.CreateFireData(_directionController.CurrentDirection,
-                position2D);
-            _fireController.Fire(fireData);
-
-            OnFireExecuted(fireData);
+            _weaponService?.ChangeWeapon(configuration);
         }
 
-        protected virtual void OnFireExecuted(WeaponFireData fireData)
+        protected virtual void HandleWeaponFired(WeaponFireData fireData)
         {
-            _effectManager.PlayFireEffect(fireData);
             OnFired?.Invoke();
         }
 
-        public virtual void SetWeaponDirection(Vector2 direction)
+        protected virtual void HandleWeaponChanged(WeaponConfiguration newConfig)
         {
-            _directionController.SetDirection(direction);
+            // 하위 클래스에서 필요시 오버라이드
         }
-
-        protected void ChangeWeaponConfiguration(WeaponConfiguration configuration)
-        {
-            _weaponConfig = configuration;
-
-            if (_isInitialized)
-            {
-                _fireController = CreateFireController();
-                _directionController = CreateDirectionController();
-                _effectManager = CreateEffectManager();
-
-                _fireController?.Initialize();
-                _directionController?.Initialize();
-            }
-            
-            AudioManager.Instance.PlaySFX(_weaponConfig.EquipSound);
-        }
-
-        protected virtual bool CanFire()
-        {
-            return _entityStatus.CanFire();
-        }
-        
-        protected abstract bool ShouldFire();
     }
 }

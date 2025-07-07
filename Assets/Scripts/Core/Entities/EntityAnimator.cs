@@ -49,8 +49,8 @@ namespace MarioGame.Core.Entities
             _animator = GetComponent<Animator>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             
-            AssertIsNotNull(_animator, "Animator required");
-            AssertIsNotNull(_spriteRenderer, "SpriteRenderer required");
+            _assertManager.AssertIsNotNull(_animator, "Animator required");
+            _assertManager.AssertIsNotNull(_spriteRenderer, "SpriteRenderer required");
             _currentFaceDireciton = _defaultFaceDirection;
         }
 
@@ -62,7 +62,7 @@ namespace MarioGame.Core.Entities
                 var animationName = _animationPrefix + state;
                 _stateAnimationMap[state] = animationName;
                 
-                Log($"Auto-mapped: {state} -> {animationName}");
+                _debugLogger.Entity($"Auto-mapped: {state} -> {animationName}");
             }
         }
 
@@ -86,11 +86,11 @@ namespace MarioGame.Core.Entities
             if (_stateAnimationHashMap.TryGetValue(newState, out var animationHash))
             {
                 _animator.Play(animationHash);
-                Log($"Playing animation for state: {newState}");
+                _debugLogger.Entity($"Playing animation for state: {newState}");
             }
             else
             {
-                LogWarning($"No animation mapped for state: {newState}");
+                _debugLogger.Warning($"No animation mapped for state: {newState}");
             }
         }
 

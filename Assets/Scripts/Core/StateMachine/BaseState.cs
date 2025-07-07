@@ -1,5 +1,8 @@
 using System;
+using System.Text;
 using MarioGame.Core.Interfaces;
+using MarioGame.Debugging.Interfaces;
+using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,8 +16,10 @@ namespace MarioGame.Core.StateMachine
     public abstract class BaseState<T> : IState<T> where T : System.Enum
     {
         protected readonly StateMachine<T> _stateMachine;
-        protected readonly IDebugLogger _logger;
+        protected readonly IDebugLogger _debugLogger;
         protected readonly bool _enableStateLogs = false;
+        
+        private static readonly StringBuilder _logBuilder = new StringBuilder(256);
 
         /// <summary>
         /// 상태 타입
@@ -27,19 +32,13 @@ namespace MarioGame.Core.StateMachine
         /// <param name="stateMachine">상태를 관리하는 StateMachine</param>
         /// <param name="logger">상태를 소유한 Entity</param>
         protected BaseState(
-            StateMachine<T> stateMachine,
-            IDebugLogger logger)
+            StateMachine<T> stateMachine, IDebugLogger debugLogger)
         {
             _stateMachine = stateMachine;
-            _logger = logger;
+            _debugLogger = debugLogger;
             
             Assert.IsNotNull(_stateMachine, "StateMachine is null");
-            Assert.IsNotNull(_logger, "Owner is null");
-            
-            if (logger != null)
-            {
-                _enableStateLogs = _logger.EnableDebugLogs;
-            }
+            Assert.IsNotNull(_debugLogger, "Owner is null");
         }
 
         public virtual void OnEnter()
@@ -74,7 +73,7 @@ namespace MarioGame.Core.StateMachine
         /// <param name="messages"></param>
         protected void StateLog(params object[] messages)
         {
-            if (!_enableStateLogs || _logger == null)
+            if (!_enableStateLogs || _debugLogger == null)
             {
                 return;
             }
@@ -83,7 +82,11 @@ namespace MarioGame.Core.StateMachine
             fullMessage[0] = $"[{GetType().Name}]";
             Array.Copy(messages, 0, fullMessage, 
                 1, messages.Length);
-            _logger.DebugLog(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.StateMachine(_logBuilder.ToString());
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace MarioGame.Core.StateMachine
         /// <param name="messages"></param>
         protected void StateLogWarning(params object[] messages)
         {
-            if (!_enableStateLogs || _logger == null)
+            if (!_enableStateLogs || _debugLogger == null)
             {
                 return;
             }
@@ -101,7 +104,11 @@ namespace MarioGame.Core.StateMachine
             fullMessage[0] = $"[{GetType().Name}]";
             Array.Copy(messages, 0, fullMessage, 
                 1, messages.Length);
-            _logger.DebugLogWarning(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.Warning(_logBuilder.ToString());
         }
         
         /// <summary>
@@ -110,16 +117,18 @@ namespace MarioGame.Core.StateMachine
         /// <param name="messages"></param>
         protected void StateLogError(params object[] messages)
         {
-            if (!_enableStateLogs || _logger == null)
+            if (!_enableStateLogs || _debugLogger == null)
             {
                 return;
             }
             
             var fullMessage = new object[messages.Length + 1];
             fullMessage[0] = $"[{GetType().Name}]";
-            Array.Copy(messages, 0, fullMessage,
-                1, messages.Length);
-            _logger.DebugLogError(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.Error(_logBuilder.ToString());
         }
         
         #endregion

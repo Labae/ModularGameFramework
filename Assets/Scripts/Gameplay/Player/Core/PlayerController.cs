@@ -4,6 +4,8 @@ using MarioGame.Core.StateMachine;
 using MarioGame.Gameplay.Camera.Events;
 using MarioGame.Gameplay.Combat.Data;
 using MarioGame.Gameplay.Components;
+using MarioGame.Gameplay.Components.Locomotion;
+using MarioGame.Gameplay.Components.Stats;
 using MarioGame.Gameplay.Config.Data;
 using MarioGame.Gameplay.Config.Input;
 using MarioGame.Gameplay.Config.Movement;
@@ -13,6 +15,7 @@ using MarioGame.Gameplay.Interfaces;
 using MarioGame.Gameplay.Physics.EntityCollision;
 using MarioGame.Gameplay.Player.Components;
 using MarioGame.Gameplay.Player.States;
+using MarioGame.Gameplay.Weapons;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Player.Core

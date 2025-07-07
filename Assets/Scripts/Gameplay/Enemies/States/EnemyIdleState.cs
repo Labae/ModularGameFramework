@@ -1,5 +1,6 @@
 using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
+using MarioGame.Debugging.Interfaces;
 using MarioGame.Gameplay.Enemies.Core;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.MovementIntents;
@@ -21,7 +22,7 @@ namespace MarioGame.Gameplay.Enemies.States
             base.OnEnter();
             
             var intent = MovementIntentFactory.CreateIdle();
-            _context.IntentReceiver.SetMovementIntent(intent);
+            _context.Movement.SetMovementIntent(intent);
 
             _idleTimer = _context.MovementConfig.GetRandomIdleTime();
             

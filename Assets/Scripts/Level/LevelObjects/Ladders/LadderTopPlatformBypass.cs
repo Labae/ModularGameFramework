@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using MarioGame.Core;
 using MarioGame.Core.Entities;
-using MarioGame.Core.Utilities;
 using MarioGame.Level.Interfaces;
 using UnityEngine;
 
@@ -19,7 +17,7 @@ namespace MarioGame.Level.LevelObjects.Ladders
         private PlatformEffector2D _platformEffector;
         private BoxCollider2D _platformCollider;
         private bool _isBypassing = false;
-
+        
         public bool IsBypassing => _isBypassing;
         public bool CanBypass => !_isBypassing && _platformCollider != null;
 
@@ -31,8 +29,8 @@ namespace MarioGame.Level.LevelObjects.Ladders
             _platformCollider = GetComponent<BoxCollider2D>();
             _platformEffector = GetComponent<PlatformEffector2D>();
 
-            AssertIsNotNull(_platformCollider, "_platformCollider required");
-            AssertIsNotNull(_platformEffector, "_platformEffector required");
+            _assertManager.AssertIsNotNull(_platformCollider, "_platformCollider required");
+            _assertManager.AssertIsNotNull(_platformEffector, "_platformEffector required");
         }
 
         public bool TryBypass(Entity entity)
@@ -45,7 +43,7 @@ namespace MarioGame.Level.LevelObjects.Ladders
             var entityCollider = entity.GetComponentInChildren<Collider2D>();
             if (entityCollider == null)
             {
-                LogWarning("Failed to get collider from entity");
+                _debugLogger.Warning("Failed to get collider from entity");
                 return false;
             }
 
@@ -116,7 +114,7 @@ namespace MarioGame.Level.LevelObjects.Ladders
             var entityCollider = entity.GetComponentInChildren<Collider2D>();
             if (entityCollider == null)
             {
-                LogWarning("Failed to get collider from entity");
+                _debugLogger.Warning("Failed to get collider from entity");
                 return;
             }
 

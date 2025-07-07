@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using MarioGame.Audio;
+using MarioGame.Audio.Interfaces;
 using MarioGame.Core;
+using MarioGame.Debugging.Interfaces;
+using Reflex.Attributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,6 +32,9 @@ namespace MarioGame.Gameplay.Animations
         [SerializeField] private float _fadeOutDuration = 0.3f;
         
         private WaitForSeconds _frameRateWait;
+        
+        [Inject]
+        private IAudioManager _audioManager;
         
         private bool _isPlaying = false;
         private bool _isPaused = false;
@@ -58,7 +64,7 @@ namespace MarioGame.Gameplay.Animations
             _renderer = GetComponent<SpriteRenderer>();
             _renderer.enabled = false;
             _frameRateWait = new WaitForSeconds(1f / _frameRate);
-            AssertIsNotNull(_renderer, "SpriteRenderer required");
+            _assertManager.AssertIsNotNull(_renderer, "SpriteRenderer required");
         }
 
         private void Start()
@@ -240,7 +246,7 @@ namespace MarioGame.Gameplay.Animations
         {
             if (_currentSpriteAnimation.AnimationSFX != null)
             {
-                AudioManager.Instance.PlaySFX3D(_currentSpriteAnimation.AnimationSFX, position3D);
+                _audioManager.PlaySFX3D(_currentSpriteAnimation.AnimationSFX, position3D);
             }
 
             do

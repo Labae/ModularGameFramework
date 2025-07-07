@@ -24,13 +24,13 @@ namespace MarioGame.Gameplay.Pickups
                 }
                 else
                 {
-                    LogError($"Failed to parse ItemType : {field.GetValueAsString()}");
+                    _debugLogger.Error($"Failed to parse ItemType : {field.GetValueAsString()}");
                     return;
                 }
             }
             else
             {
-                LogError("Failed to get ItemType field");
+                _debugLogger.Error("Failed to get ItemType field");
                 return;
             }
             

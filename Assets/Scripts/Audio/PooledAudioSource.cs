@@ -16,7 +16,7 @@ namespace MarioGame.Audio
         {
             base.CacheComponents();
             _audioSource ??= GetComponent<AudioSource>();
-            AssertIsNotNull(_audioSource, "AudioSource component required");
+            _assertManager.AssertIsNotNull(_audioSource, "AudioSource component required");
         }
 
         public void PlayAudio(AudioRequest request)

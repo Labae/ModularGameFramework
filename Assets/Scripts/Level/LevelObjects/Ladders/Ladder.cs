@@ -1,4 +1,6 @@
 using MarioGame.Core.Entities;
+using MarioGame.Debugging.Interfaces;
+using Reflex.Attributes;
 using UnityEngine;
 
 namespace MarioGame.Level.LevelObjects.Ladders
@@ -12,7 +14,7 @@ namespace MarioGame.Level.LevelObjects.Ladders
         [SerializeField, Min(0.1f)] private float _endPointThreshold = 0.3f;
 
         [Header("Debug")] [SerializeField] private bool _drawGizmos = true;
-
+        
         public Vector2 TopPoint => _boxCollider.bounds.max;
         public Vector2 BottomPoint => _boxCollider.bounds.min;
         
@@ -23,11 +25,11 @@ namespace MarioGame.Level.LevelObjects.Ladders
         {
             base.CacheComponents();
             _boxCollider = GetComponent<BoxCollider2D>();
-            AssertIsNotNull(_boxCollider, "BoxCollider2D required");
+            _assertManager.AssertIsNotNull(_boxCollider, "BoxCollider2D required");
             if (!_boxCollider.isTrigger)
             {
                 _boxCollider.isTrigger = true;
-                DebugLogWarning("Ladder should have isTrigger = true");
+                _debugLogger.Warning("Ladder should have isTrigger = true");
             }
         }
 

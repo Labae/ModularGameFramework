@@ -16,8 +16,8 @@ namespace MarioGame.Gameplay.Pickups
             base.CacheComponents();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _ldtkFields = GetComponent<LDtkFields>();
-            AssertIsNotNull(_spriteRenderer, "SpriteRenderer required");
-            AssertIsNotNull(_ldtkFields, "LDtkFields required");
+            _assertManager.AssertIsNotNull(_spriteRenderer, "SpriteRenderer required");
+            _assertManager.AssertIsNotNull(_ldtkFields, "LDtkFields required");
         }
     }
 }

@@ -6,16 +6,16 @@ namespace MarioGame.Gameplay.Enemies.Core
 {
     public class EnemyAnimator : EntityAnimator<EnemyStateType>
     {
-        [Header("Enemy Status")]
-        [SerializeField] private EnemyStatus _status;
+        [Header("Enemy Status")] [SerializeField]
+        private EnemyStatus _status;
 
         protected override void CacheComponents()
         {
             base.CacheComponents();
             _status = GetComponentInParent<EnemyStatus>();
-            AssertIsNotNull(_status, "EnemyStatus required");
+            _assertManager.AssertIsNotNull(_status, "EnemyStatus required");
         }
-        
+
         private void Start()
         {
             SetupEnemyStatusListeners();
@@ -23,15 +23,18 @@ namespace MarioGame.Gameplay.Enemies.Core
 
         private void OnDestroy()
         {
-            _status.CurrentState.OnValueChanged -= OnStateChanged;
-            _status.FaceDirection.OnValueChanged -= UpdateDirection;
+            if (_status != null)
+            {
+                _status.CurrentState.OnValueChanged -= OnStateChanged;
+                _status.FaceDirection.OnValueChanged -= UpdateDirection;
+            }
         }
 
         private void SetupEnemyStatusListeners()
         {
             if (_status == null)
             {
-                LogError("Failed to setup enemy status listeners");
+                _debugLogger?.Error("Failed to setup enemy status listeners");
                 return;
             }
 

@@ -1,9 +1,11 @@
 using System;
 using MarioGame.Audio;
+using MarioGame.Audio.Interfaces;
 using MarioGame.Gameplay.Config.Item;
 using MarioGame.Gameplay.Config.Weapon;
 using MarioGame.Gameplay.Interfaces.Pickups;
 using MarioGame.Level.Enums;
+using Reflex.Attributes;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Pickups
@@ -15,6 +17,9 @@ namespace MarioGame.Gameplay.Pickups
         private WeaponType _currentWeaponType;
         private WeaponData _currentWeaponData;
 
+        [Inject]
+        private IAudioManager _audioManager;
+        
         public WeaponConfiguration Config => _currentWeaponData.Configuration;
 
         public bool CanBePickedUp => true;
@@ -45,13 +50,13 @@ namespace MarioGame.Gameplay.Pickups
                 }
                 else
                 {
-                    LogError($"Failed to parse ItemType : {field.GetValueAsString()}");
+                    _debugLogger.Error($"Failed to parse ItemType : {field.GetValueAsString()}");
                     return;
                 }
             }
             else
             {
-                LogError("Failed to get ItemType field");
+                _debugLogger.Error("Failed to get ItemType field");
                 return;
             }
             
@@ -67,7 +72,7 @@ namespace MarioGame.Gameplay.Pickups
 
         private void HandlePickup()
         {
-            AudioManager.Instance.PlaySFX(_currentWeaponData.PickupSFX);
+            _audioManager.PlaySFX(_currentWeaponData.PickupSFX);
             Destroy(gameObject);
         }
     }

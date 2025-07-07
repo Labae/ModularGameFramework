@@ -1,5 +1,6 @@
 using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
+using MarioGame.Debugging.Interfaces;
 using MarioGame.Gameplay.Enemies.Core;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.MovementIntents;
@@ -29,7 +30,7 @@ namespace MarioGame.Gameplay.Enemies.States
                 .SetMoveDirection(0);
 
             var idleIntent = MovementIntentFactory.CreateIdle();
-            _context.IntentReceiver.SetMovementIntent(idleIntent);
+            _context.Movement.SetMovementIntent(idleIntent);
         }
     }
 }

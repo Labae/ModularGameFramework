@@ -1,9 +1,10 @@
-using MarioGame.Core.Interfaces;
 using MarioGame.Core.ObjectPooling;
+using MarioGame.Core.ObjectPooling.Interface;
 using MarioGame.Gameplay.Animations;
 using MarioGame.Gameplay.Config.Weapon;
 using MarioGame.Gameplay.Effects.DeathEffects;
 using MarioGame.Gameplay.Effects.HitEffects;
+using MarioGame.Gameplay.Effects.Interface;
 using MarioGame.Gameplay.Enums;
 using UnityEngine;
 
@@ -12,9 +13,18 @@ namespace MarioGame.Gameplay.Effects
     /// <summary>
     /// 이펙트 생성을 담당하는 팩토리
     /// </summary>
-    public static class EffectFactory
+    public sealed class EffectFactory : IEffectFactory
     {
-        public static ProjectileEffect CreateProjectileHitEffect(
+        private readonly IObjectPoolManager _poolManager;
+        private readonly ILogger _logger;
+
+        public EffectFactory(IObjectPoolManager poolManager, ILogger logger)
+        {
+            _poolManager = poolManager;
+            _logger = logger;
+        }
+        
+        public ProjectileEffect CreateProjectileHitEffect(
             Vector2 position,
             WeaponConfiguration config,
             Collider2D hitCollider,
@@ -35,7 +45,7 @@ namespace MarioGame.Gameplay.Effects
             return CreateAndInitialize<ProjectileEffect>(data);
         }
         
-        public static ProjectileEffect CreatePenetrateEffect(
+        public ProjectileEffect CreatePenetrateEffect(
             Vector2 position,
             WeaponConfiguration config,
             Collider2D hitCollider,
@@ -56,7 +66,7 @@ namespace MarioGame.Gameplay.Effects
             return CreateAndInitialize<ProjectileEffect>(data);
         }
 
-        public static EntityDeathEffect CreateEnemyDeathEffect(
+        public EntityDeathEffect CreateEnemyDeathEffect(
             SpriteAnimation deathAnimation,
             Vector2 position,
             float entitySize = 1f
@@ -72,10 +82,10 @@ namespace MarioGame.Gameplay.Effects
             return CreateAndInitialize<EntityDeathEffect>(data);
         }
 
-        public static T CreateAndInitialize<T>(EffectSpawnData data)
+        public T CreateAndInitialize<T>(EffectSpawnData data)
             where T : PoolableObject
         {
-            var effect = ObjectPoolManager.Instance.Get<T>();
+            var effect = _poolManager.Get<T>();
 
             if (effect is ProjectileEffect projectileEffect && data is ProjectileHitEffectData hitEffectData)
             {

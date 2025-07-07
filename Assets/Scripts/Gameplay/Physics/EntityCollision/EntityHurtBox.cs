@@ -29,7 +29,7 @@ namespace MarioGame.Gameplay.Physics.EntityCollision
         {
             base.CacheComponents();
             _damageable = GetComponentInParent<IDamageable>();
-            AssertIsNotNull(_damageable, "IDamageable required in parent");
+            _assertManager.AssertIsNotNull(_damageable, "IDamageable required in parent");
         }
         
         /// <summary>
@@ -67,7 +67,7 @@ namespace MarioGame.Gameplay.Physics.EntityCollision
             if (_isCriticalHitZone)
             {
                 multiplier *= _criticalMultiplier;
-                Log($"Critical hit on {_hurtboxName}! Damage: {baseDamage} -> {Mathf.RoundToInt(baseDamage * multiplier)}");
+                _debugLogger.Entity($"Critical hit on {_hurtboxName}! Damage: {baseDamage} -> {Mathf.RoundToInt(baseDamage * multiplier)}");
             }
             
             return Mathf.RoundToInt(baseDamage * multiplier);

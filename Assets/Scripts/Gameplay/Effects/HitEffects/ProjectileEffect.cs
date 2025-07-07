@@ -82,7 +82,7 @@ namespace MarioGame.Gameplay.Effects.HitEffects
                 return;
             }
             
-            LogWarning($"No animation found for {_hitType}");
+            _debugLogger.Warning($"No animation found for {_hitType}");
         }
 
         private void SetupPenetrateEffect()
@@ -95,7 +95,7 @@ namespace MarioGame.Gameplay.Effects.HitEffects
             }
             
             SetupNormalHitEffect();
-            Log("Using fallback animation for penetrate effect");
+            _debugLogger.Effect("Using fallback animation for penetrate effect");
         }
         
 
@@ -144,14 +144,14 @@ namespace MarioGame.Gameplay.Effects.HitEffects
                 {
                     // 관통 전용 애니메이션 재생
                     _animator.Play(penetrateAnimation, GetEffectDirection());
-                    Log($"Playing penetrate animation: {penetrateAnimation.name} for {_hitType} ({_projectileType})");
+                    _debugLogger.Effect($"Playing penetrate animation: {penetrateAnimation.name} for {_hitType} ({_projectileType})");
                     return;
                 }
             }
     
             // Fallback: 일반 히트 애니메이션 사용
             ConfigureSpriteAnimatorForHitType();
-            Log($"Playing fallback animation for penetrate effect");
+            _debugLogger.Effect($"Playing fallback animation for penetrate effect");
         }
 
         private Vector2? GetEffectDirection()
@@ -170,7 +170,7 @@ namespace MarioGame.Gameplay.Effects.HitEffects
             {
                 return;
             }
-            LogWarning($"No animation or sprites found for {_hitType} with ProjectileType {_projectileType}");
+            _debugLogger.Warning($"No animation or sprites found for {_hitType} with ProjectileType {_projectileType}");
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace MarioGame.Gameplay.Effects.HitEffects
             {
                 // SpriteAnimation 기반 재생
                 _animator.SetAnimation(spriteAnim);
-                Log($"Set WeaponConfig animation: {spriteAnim.name} for {_hitType} ({_projectileType})");
+                _debugLogger.Effect($"Set WeaponConfig animation: {spriteAnim.name} for {_hitType} ({_projectileType})");
                 return true;
             }
 

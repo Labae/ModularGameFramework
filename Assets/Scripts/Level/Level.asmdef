@@ -3,7 +3,9 @@
     "rootNamespace": "MarioGame",
     "references": [
         "GUID:b279e5128f68f4bb4b70f241b8458385",
-        "GUID:831b458ef8919c24ea12fb444fc41310"
+        "GUID:831b458ef8919c24ea12fb444fc41310",
+        "GUID:a3effc43589c44a9589ae918c35035dd",
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

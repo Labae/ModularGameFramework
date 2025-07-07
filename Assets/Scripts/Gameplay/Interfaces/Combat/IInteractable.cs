@@ -1,5 +1,5 @@
 using MarioGame.Gameplay.Physics.ProjectileCollision;
-using MarioGame.Gameplay.Physics.ProjectileCollision.Core;
+using MarioGame.Gameplay.Projectiles.ProjectileCollision.Core;
 
 namespace MarioGame.Gameplay.Interfaces.Combat
 {

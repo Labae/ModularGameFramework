@@ -1,5 +1,5 @@
 using MarioGame.Gameplay.Config.Weapon;
-using MarioGame.Gameplay.Physics.ProjectileCollision.Core;
+using MarioGame.Gameplay.Projectiles.ProjectileCollision.Core;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Interfaces.Projectiles

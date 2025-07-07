@@ -1,7 +1,10 @@
 {
     "name": "Core",
     "rootNamespace": "MarioGame",
-    "references": [],
+    "references": [
+        "GUID:a3effc43589c44a9589ae918c35035dd",
+        "GUID:1530a967b84cfb44dbdd5e8a1989764f"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

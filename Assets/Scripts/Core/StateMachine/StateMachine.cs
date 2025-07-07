@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MarioGame.Core.Entities;
-using MarioGame.Core.Interfaces;
+using System.Text;
+using MarioGame.Debugging.Interfaces;
 using UnityEngine.Assertions;
 
 namespace MarioGame.Core.StateMachine
@@ -14,8 +14,10 @@ namespace MarioGame.Core.StateMachine
     public class StateMachine<T> where T : Enum
     {
         private readonly Dictionary<T, IState<T>> _states;
-        private readonly IDebugLogger _logger;
-        
+        private readonly IAssertManager _assertManager;
+        private readonly IDebugLogger _debugLogger;
+        private static readonly StringBuilder _logBuilder = new StringBuilder(256);
+
         private IState<T> _currentState;
         private T _currentStateType;
         private bool _enableStateMachineLogs = false;
@@ -23,22 +25,19 @@ namespace MarioGame.Core.StateMachine
         public IState<T> CurrentState => _currentState;
         public T CurrentStateType => _currentStateType;
         
-        public event Action<T, T> OnStateChanged; 
+        public event Action<T, T> OnStateChanged;
 
         /// <summary>
         /// StateMachine 생성자
         /// </summary>
-        /// <param name="logger">StateMachine을 소유한 Entity</param>
-        public StateMachine(IDebugLogger logger)
+        /// <param name="debugLogger">StateMachine을 소유한 Entity</param>
+        /// <param name="assertManager"></param>
+        public StateMachine(IDebugLogger debugLogger, IAssertManager assertManager)
         {
             _states = new Dictionary<T, IState<T>>();
-            _logger = logger;
-            Assert.IsNotNull(_logger, "StateMachine owner cannot be null.");
-
-            if (logger != null)
-            {
-                _enableStateMachineLogs = _logger.EnableDebugLogs;
-            }
+            _assertManager = assertManager;
+            _debugLogger = debugLogger;
+            _assertManager.AssertIsNotNull(_debugLogger, "StateMachine owner cannot be null.");
         }
         
         /// <summary>
@@ -237,20 +236,22 @@ namespace MarioGame.Core.StateMachine
 
         private void StateMachineLog(params object[] messages)
         {
-            if (!_enableStateMachineLogs || _logger == null)
+            if (!_enableStateMachineLogs || _debugLogger == null)
             {
                 return;
             }
 
             var fullMessage = new object[messages.Length + 1];
-            fullMessage[0] = "[StateMachine]";
-            Array.Copy(messages, 0, fullMessage, 1, messages.Length);
-            _logger.DebugLog(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.StateMachine(_logBuilder.ToString());
         }
         
         private void StateMachineLogWarning(params object[] messages)
         {
-            if (!_enableStateMachineLogs || _logger == null)
+            if (!_enableStateMachineLogs || _debugLogger == null)
             {
                 return;
             }
@@ -258,12 +259,16 @@ namespace MarioGame.Core.StateMachine
             var fullMessage = new object[messages.Length + 1];
             fullMessage[0] = "[StateMachine]";
             Array.Copy(messages, 0, fullMessage, 1, messages.Length);
-            _logger.DebugLogWarning(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.Warning(_logBuilder.ToString());
         }
         
         private void StateMachineLogError(params object[] messages)
         {
-            if (!_enableStateMachineLogs || _logger == null)
+            if (!_enableStateMachineLogs || _debugLogger == null)
             {
                 return;
             }
@@ -271,7 +276,11 @@ namespace MarioGame.Core.StateMachine
             var fullMessage = new object[messages.Length + 1];
             fullMessage[0] = "[StateMachine]";
             Array.Copy(messages, 0, fullMessage, 1, messages.Length);
-            _logger.DebugLogError(fullMessage);
+            foreach (var message in fullMessage)
+            {
+                _logBuilder.Append(message);
+            }
+            _debugLogger.Error(_logBuilder.ToString());
         }
 
         #endregion

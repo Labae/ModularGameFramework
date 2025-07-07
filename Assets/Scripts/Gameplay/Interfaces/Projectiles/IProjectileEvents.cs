@@ -1,6 +1,6 @@
 using System;
 using MarioGame.Gameplay.Physics.ProjectileCollision;
-using MarioGame.Gameplay.Physics.ProjectileCollision.Core;
+using MarioGame.Gameplay.Projectiles.ProjectileCollision.Core;
 using UnityEngine;
 
 namespace MarioGame.Gameplay.Interfaces.Projectiles

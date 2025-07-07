@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using MarioGame.Audio.Interfaces;
 using MarioGame.Core;
+using Reflex.Attributes;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace MarioGame.Audio
 {
-    public class AudioManager : CoreBehaviour
+    public class AudioManager : CoreBehaviour, IAudioManager
     {
         [Header("Settings")] 
         [SerializeField] private int _maxPoolSize = 10;
@@ -17,42 +19,18 @@ namespace MarioGame.Audio
         [Header("Mixer Groups")] 
         [SerializeField] private AudioMixerGroup _musicMixerGroup;
         [SerializeField] private AudioMixerGroup _sfxMixerGroup;
-        
-        private static AudioManager _instance;
+
+        [Inject] private Debugging.Interfaces.IDebugLogger _debugLogger;
         
         private Queue<PooledAudioSource> _availableAudioSources = new();
         private List<PooledAudioSource> _allAudioSources = new();
-
         private PooledAudioSource _currentMusicSource;
-
-        public static AudioManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    var go = new GameObject("AudioSystem");
-                    _instance = go.AddComponent<AudioManager>();
-                    DontDestroyOnLoad(go);
-                }
-
-                return _instance;
-            }
-        }
         
         protected override void Awake()
         {
             base.Awake();
-            if (_instance == null)
-            {
-                _instance = this;
-                DontDestroyOnLoad(gameObject);
-                InitializeAudioPool();
-            }
-            else if (_instance != this)
-            {
-                Destroy(gameObject);
-            }
+            DontDestroyOnLoad(gameObject);
+            InitializeAudioPool();
         }
 
         private void InitializeAudioPool()
@@ -89,8 +67,8 @@ namespace MarioGame.Audio
                     return source;
                 }
             }
-
-            LogWarning("All audio sources are available. Creating new audio source.");
+            
+            _debugLogger.Warning("All audio sources are available. Creating new audio source.");
             return CreatePooledAudioSource();
         }
 

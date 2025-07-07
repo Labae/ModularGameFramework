@@ -1,6 +1,7 @@
 using MarioGame.Core.Data;
 using MarioGame.Core.Interfaces;
 using MarioGame.Core.StateMachine;
+using MarioGame.Debugging.Interfaces;
 using MarioGame.Gameplay.Enemies.Core;
 using MarioGame.Gameplay.Enums;
 using MarioGame.Gameplay.MovementIntents;
@@ -85,7 +86,7 @@ namespace MarioGame.Gameplay.Enemies.States
             var direction = (targetPosition - currentPosition).normalized.x;
             _context.InputProvider.SetMoveDirection(direction);
             _patrolIntent.HorizontalInput = direction;
-            _context.IntentReceiver.SetMovementIntent(_patrolIntent);
+            _context.Movement.SetMovementIntent(_patrolIntent);
         }
     }
 }

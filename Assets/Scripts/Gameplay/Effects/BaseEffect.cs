@@ -20,7 +20,7 @@ namespace MarioGame.Gameplay.Effects
         {
             base.CacheComponents();
             _animator = GetComponent<SpriteAnimator>();
-            AssertIsNotNull(_animator, "SpriteAnimator required");
+            _assertManager.AssertIsNotNull(_animator, "SpriteAnimator required");
         }
 
         public void Initialize(TSpawnData spawnData)
